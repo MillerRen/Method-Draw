@@ -15,7 +15,8 @@ var SVG2Chalk = (function(){
     {
         var source = build();
         var source = btoa(source);
-        var url = "https://rawgithub.com/DavidLanderosAlcala/airconsole-project1/5b51101ee262db836d827d80d256caaf7069b671/src/screen.html?loadLevel=" + source
+        //var url = "file:///C:/Users/david.landeros/Documents/HTML5%20Projects/airconsole-project1/src/screen.html?loadLevel=" + source
+        var url = "https://rawgithub.com/DavidLanderosAlcala/airconsole-project1/f246e55c52a24a2a5188a63cc2d36067c5f32664/src/screen.html?loadLevel=" + source
         window.open(url, "", "width=1000,height=618");
     }
 
@@ -46,22 +47,24 @@ var SVG2Chalk = (function(){
             delete shape.category;
             switch(category)
             {
-                case "bodies" : {
-                    bodies.push(shape);
-                    break;
-                }
-                case "tacks" : {
-                    tacks.push(shape);
-                    break;
-                }
-                case "hints" : {
-                    tacks.push(shape);
-                    break;
-                }
-                case "decoration" : {
-                    tacks.push(shape);
-                    break;
-                }
+                case "bodies" : { bodies.push(shape); break; }
+                case "tacks" : { tacks.push(shape); break; }
+                case "hints" : { tacks.push(shape); break; }
+                case "decoration" : { tacks.push(shape); break; }
+            }
+        }
+
+        for(var i = 0; i < ellipses.length; i++)
+        {
+            var shape =  createShapeFromEllipse(ellipses[i]);
+            var category = shape.category;
+            delete shape.category;
+            switch(category)
+            {
+                case "bodies" : { bodies.push(shape); break; }
+                case "tacks" : { tacks.push(shape); break; }
+                case "hints" : { tacks.push(shape); break; }
+                case "decoration" : { tacks.push(shape); break; }
             }
         }
 
@@ -134,7 +137,7 @@ var SVG2Chalk = (function(){
     {
     	return {
     		label : element.getAttribute("id"),
-            type : "Polygon",
+            type : "polygon",
             position : [element.getAttribute("cx"),element.getAttribute("cy")],
             radio : element.getAttribute("rx"),
             category : "bodies",
@@ -145,15 +148,24 @@ var SVG2Chalk = (function(){
 
     function createShapeFromEllipse(element)
     {
-    	return {
-    		label : element.getAttribute("id"),
-            type : "Polygon",
-            position : [element.getAttribute("cx"),element.getAttribute("cy")],
-            radio : element.getAttribute("rx"),
+        var radius = scaleIt(element.getAttribute("rx"));
+        var x = scaleIt(parseInt(element.getAttribute("cx")));
+        var y = scaleIt(parseInt(element.getAttribute("cy")));
+
+        x -= (svg_width>>1)
+        y = (svg_height -  y);
+
+        var obj = {
+            label : element.getAttribute("id"),
+            type : "circle",
+            position : [x, y],
             category : "bodies",
             isStatic : element.getAttribute("fill") == "#000000",
             isSensor : element.getAttribute("stroke") == "#ff0000",
-    	};
+            radio : radius,
+        };
+
+        return obj;
     }
 
     function scaleIt(value)
