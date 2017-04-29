@@ -86,6 +86,18 @@ var SVG2Chalk = (function(){
         var y = scaleIt(parseInt(element.getAttribute("y")));
 
 
+        var rotation = element.getAttribute("transform") || "";
+        if(rotation.indexOf("rotate") == 0)
+        {
+            rotation = rotation.split(" ")[0].replace("rotate(","");
+            rotation = -parseFloat(rotation) * Math.PI / 180;
+        }
+        else
+        {
+            rotation = 0.0;
+        }
+
+
         x -= (svg_width>>1)
         y = (svg_height -  y);
 
@@ -106,6 +118,14 @@ var SVG2Chalk = (function(){
                 [half_width, -half_height],
             ]
     	};
+
+        for(var i = 0; i < obj.vertices.length; i++)
+        {
+            var x = obj.vertices[i][0];
+            var y = obj.vertices[i][1];
+            obj.vertices[i][0] = (x  * Math.cos(rotation)) - (y * Math.sin(rotation)); 
+            obj.vertices[i][1] = (y * Math.cos(rotation)) + (x * Math.sin(rotation));
+        }
 
         return obj;
     }
