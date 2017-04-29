@@ -50,7 +50,7 @@ var SVG2Chalk = (function(){
                 case "bodies" : { bodies.push(shape); break; }
                 case "tacks" : { tacks.push(shape); break; }
                 case "hints" : { hints.push(shape); break; }
-                case "decoration" : { decorations.push(shape); break; }
+                case "decorations" : { decorations.push(shape); break; }
             }
         }
 
@@ -129,11 +129,22 @@ var SVG2Chalk = (function(){
             obj.vertices[i][0] = (x  * Math.cos(rotation)) - (y * Math.sin(rotation)); 
             obj.vertices[i][1] = (y * Math.cos(rotation)) + (x * Math.sin(rotation));
         }
-
+        
+        var opacity = element.getAttribute("opacity");
         if(element.getAttribute("stroke-dasharray") != "none")
         {
             obj.category = "hints";
             obj.vertices.push(obj.vertices[0]);
+            obj.opacity = opacity;
+            delete obj.isStatic;
+            delete obj.isSensor;
+            delete obj.type;
+        }
+        else if(opacity)
+        {
+            obj.category = "decorations";
+            obj.vertices.push(obj.vertices[0]);
+            obj.opacity = opacity;
             delete obj.isStatic;
             delete obj.isSensor;
             delete obj.type;
