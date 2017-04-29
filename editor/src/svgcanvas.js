@@ -5563,19 +5563,18 @@ this.open = function() {
 this.save = function(opts) {
   // remove the selected outline before serializing
 
-  var filename = prompt("Please enter the filename", "new-level.js");
   clearSelection();
   // Update save options if provided
   if(opts) $.extend(save_options, opts);
   save_options.apply = true;
   
   // no need for doctype, see http://jwatt.org/svg/authoring/#doctype-declaration
-  var str = SVG2Chalk.toChalk(this.svgCanvasToString());
-  console.log(str);
+  var str = this.svgCanvasToString();
+
   if (svgedit.browser.supportsBlobs()) {
     var blob = new Blob([ str ], {type: "application/javascript"});
     var dropAutoBOM = true;
-    saveAs(blob, filename, dropAutoBOM);
+    saveAs(blob, "svg1.svg", dropAutoBOM);
   }
   else {
     call("saved", str);
