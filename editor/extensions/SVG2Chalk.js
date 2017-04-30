@@ -7,7 +7,7 @@
 var SVG2Chalk = (function(){
 
     var parser = new DOMParser();
-    var scale = 0.02;
+    var scale = 0.01;
     var svg_width = 0;
     var svg_height = 0;
 
