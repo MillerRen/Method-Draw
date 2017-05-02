@@ -57,7 +57,7 @@
   <script type="text/javascript" src="lib/jgraduate/jpicker.min.js"></script>
   <script type="text/javascript" src="lib/mousewheel.js"></script>
   <script type="text/javascript" src="extensions/ext-eyedropper.js"></script>
-  <script type="text/javascript" src="extensions/ext-shapes.js"></script>
+  <!-- <script type="text/javascript" src="extensions/ext-shapes.js"></script>-->
   <script type="text/javascript" src="extensions/ext-grid.js"></script>
   <script type="text/javascript" src="lib/requestanimationframe.js"></script>
   <script type="text/javascript" src="lib/taphold.js"></script>
@@ -160,7 +160,9 @@
         <div onclick="SVG2Chalk.run(1000,618);" class="menu_item" id="tool_rulers">Run (1000 x 618)</div>
         <div onclick="SVG2Chalk.run(1400,865);" class="menu_item" id="tool_rulers">Run (1400 x 865)</div>
         <div class="separator"></div>
-        <div onclick="" class="menu_item" id="tool_rulers">Export level ...</div>
+        <div onclick="SVG2Chalk.export();" class="menu_item" id="tool_rulers">Export level ...</div>
+        <div class="separator"></div>
+        <div onclick="SVG2Chalk.showProperties()" class="menu_item" id="tool_rulers">Level properties</div>
     </div>
   </div>
   
@@ -556,13 +558,13 @@
 
 
 <div id="tools_left" class="tools_panel">
+  <div class="tool_button hiddenForChalk" id="tool_fhpath" title="Pencil Tool [P]"></div>
   <div class="tool_button" id="tool_select" title="Select Tool [V]"></div>
-  <div class="tool_button" id="tool_fhpath" title="Pencil Tool [P]"></div>
-  <div class="tool_button" id="tool_line" title="Line Tool [L]"></div>
+  <!--<div class="tool_button" id="tool_line" title="Line Tool [L]"></div>-->
   <div class="tool_button" id="tool_rect" title="Square/Rect Tool [R]"></div>
   <div class="tool_button" id="tool_ellipse" title="Ellipse/Circle Tool [C]"></div>
   <div class="tool_button" id="tool_path" title="Path Tool [P]"></div>
-  <div class="tool_button" id="tool_text" title="Text Tool [T]"></div>
+  <!-- <div class="tool_button" id="tool_text" title="Text Tool [T]"></div> -->
   <div class="tool_button" id="tool_zoom" title="Zoom Tool [Z]"></div>
   
   <div id="color_tools" class="hiddenForChalk">
