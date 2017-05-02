@@ -113,7 +113,7 @@ var SVG2Chalk = (function(){
             position : [x, y],
             category : element.getAttribute("category"),
             isStatic : element.getAttribute("static") == "true",
-            isSensor : element.getAttribute("sensor") == "sensor",
+            isSensor : element.getAttribute("sensor") == "true",
             vertices : [
                 [-half_width, -half_height],
                 [-half_width, half_height],

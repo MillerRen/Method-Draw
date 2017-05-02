@@ -1317,6 +1317,8 @@
             $("#static_label").html(selectedElement.getAttribute("static") || "false");
             $('#category').val(selectedElement.getAttribute("category") || "bodies");
             $("#category_label").html(selectedElement.getAttribute("category") || "bodies");
+            $('#sensor').val(selectedElement.getAttribute("sensor") || "false");
+            $("#sensor_label").html(selectedElement.getAttribute("sensor") || "false");
 
             var dash = selectedElement.getAttribute("stroke-dasharray") || "none"
             $('option', '#stroke_style').removeAttr('selected');
@@ -1324,6 +1326,7 @@
             $('#stroke_style').trigger('change');
             $('#static').trigger('change');
             $('#category').trigger('change');
+            $('#sensor').trigger('change');
 
             //$.fn.dragInput.updateCursor($('#stroke_width')[0])
             $.fn.dragInput.updateCursor($('#blur')[0])
@@ -1723,6 +1726,21 @@
 
 
         $("#category_label").html(this.options[this.selectedIndex].text);
+        operaRepaint();
+      });
+
+      $('#sensor').change(function(){
+        svgCanvas.setStrokeAttr('sensor', $(this).val() || "false");
+        if($(this).val() == "true")
+        {
+            svgCanvas.setStrokeAttr('opacity', "0.2");
+        }
+        else
+        {
+            svgCanvas.setStrokeAttr('opacity', "none");
+        }
+
+        $("#sensor_label").html(this.options[this.selectedIndex].text);
         operaRepaint();
       });
       
