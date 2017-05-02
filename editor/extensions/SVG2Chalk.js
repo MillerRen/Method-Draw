@@ -11,13 +11,13 @@ var SVG2Chalk = (function(){
     var svg_width = 0;
     var svg_height = 0;
 
-    function run()
+    function run(width, height)
     {
         var source = build();
         var source = btoa(source);
         //var url = "file:///C:/Users/david.landeros/Documents/HTML5%20Projects/airconsole-project1/src/screen.html?loadLevel=" + source
         var url = "https://rawgithub.com/DavidLanderosAlcala/airconsole-project1/f246e55c52a24a2a5188a63cc2d36067c5f32664/src/screen.html?loadLevel=" + source
-        window.open(url, "", "width=1000,height=618");
+        window.open(url, "", "width=" + width + ",height=" + height);
     }
 
     function build()

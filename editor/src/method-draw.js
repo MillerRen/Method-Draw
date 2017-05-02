@@ -1312,12 +1312,16 @@
             //Editor.paintBox.stroke.update(false);
             
             $('#stroke_width').val(selectedElement.getAttribute("stroke-width") || 0);
+
+            $('#static').val(selectedElement.getAttribute("static") || false);
+            $("#static_label").html(selectedElement.getAttribute("static") || "false");
+
             var dash = selectedElement.getAttribute("stroke-dasharray") || "none"
             $('option', '#stroke_style').removeAttr('selected');
             $('#stroke_style option[value="'+ dash +'"]').attr("selected", "selected");
             $('#stroke_style').trigger('change');
 
-            $.fn.dragInput.updateCursor($('#stroke_width')[0])
+            //$.fn.dragInput.updateCursor($('#stroke_width')[0])
             $.fn.dragInput.updateCursor($('#blur')[0])
           }
   
@@ -1679,6 +1683,20 @@
       $('#stroke_style').change(function(){
         svgCanvas.setStrokeAttr('stroke-dasharray', $(this).val());
         $("#stroke_style_label").html(this.options[this.selectedIndex].text)
+        operaRepaint();
+      });
+
+      $('#static').change(function(){
+        svgCanvas.setStrokeAttr('static', $(this).val());
+        if($(this).val() == "true")
+        {
+            svgCanvas.setStrokeAttr('fill', "#000000");
+        }
+        else
+        {
+            svgCanvas.setStrokeAttr('fill', "none");
+        }
+        $("#static_label").html(this.options[this.selectedIndex].text)
         operaRepaint();
       });
       

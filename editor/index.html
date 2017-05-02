@@ -12,6 +12,14 @@
   <link rel="stylesheet" href="lib/jgraduate/css/jgraduate.css" type="text/css"/>
   <link rel="stylesheet" href="css/method-draw.css" type="text/css"/>
   <link rel="stylesheet" href="css/fonts.css" type="text/css"/>
+  <style>
+  .hiddenForChalk
+  {
+    z-index: -1;
+    position: absolute;
+    left : -1000px;
+  }
+  </style>
 <!--{endif}-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <meta name="apple-mobile-web-app-capable" content="yes"/>
@@ -149,7 +157,10 @@
   <div class="menu">
     <div class="menu_title">Chalk</div>
     <div class="menu_list" id="view_menu">
-        <div onclick="SVG2Chalk.run();" class="menu_item push_button_pressed" id="tool_rulers">Run</div>
+        <div onclick="SVG2Chalk.run(1000,618);" class="menu_item" id="tool_rulers">Run (1000 x 618)</div>
+        <div onclick="SVG2Chalk.run(1400,865);" class="menu_item" id="tool_rulers">Run (1400 x 865)</div>
+        <div class="separator"></div>
+        <div onclick="" class="menu_item" id="tool_rulers">Export level ...</div>
     </div>
   </div>
   
@@ -168,12 +179,12 @@
       <span class="icon_label">Width</span>
     </label>
     <label data-title="Change canvas height">
-      <input id="canvas_height" size="3" type="text" pattern="[0-9]*" />
+      <input id="canvas_height" size="3" type="text" pattern="[0-9]*"/>
       <span class="icon_label">Height</span>
     </label>
         
-    
-    <label data-title="Change canvas color" class="draginput">
+    <!-- HIDDEN FOR CHALK LEVEL EDITOR -->
+    <label data-title="Change canvas color" class="draginput hiddenForChalk">
       <span>Color</span>
       <div id="color_canvas_tools">
         <div class="color_tool active" id="tool_canvas">
@@ -185,7 +196,8 @@
       </div>
     </label>
 
-    <div class="draginput">
+    <!-- HIDDEN FOR CHALK LEVEL EDITOR -->
+    <div class="draginput hiddenForChalk">
       <span>Sizes</span>
       <select id="resolution">
         <option id="selectedPredefined" selected="selected">Custom</option>
@@ -199,6 +211,7 @@
       <div class="caret"></div>
       <label id="resolution_label">Custom</label>
     </div>
+  
 
   </div>
   
@@ -426,14 +439,14 @@
         <span id="group_opacityLabel" class="icon_label">Opacity</span>
       </label>
     
-    <div class="toolset" id="tool_blur" data-title="Change gaussian blur value">
+    <div class="toolset hiddenForChalk" id="tool_blur" data-title="Change gaussian blur value">
       <label>
         <input id="blur" size="2" value="0" step=".1"  min="0" max="10" />
         <span class="icon_label">Blur</span>
       </label>
     </div>
     
-    <label id="cornerRadiusLabel" data-title="Change Rectangle Corner Radius">
+    <label class="hiddenForChalk" id="cornerRadiusLabel" data-title="Change Rectangle Corner Radius">
       <input id="rect_rx" size="3" value="0" data-attr="rx" class="attr_changer" type="text" pattern="[0-9]*" />
       <span class="icon_label">Roundness</span>
     </label>
@@ -483,12 +496,15 @@
   
   <div id="stroke_panel" class="context_panel clearfix">
     <div class="clearfix"></div>
-    <h4>Stroke</h4>
-    <div class="toolset" data-title="Change stroke">
-      <label>
-        <input id="stroke_width" size="2" value="5" data-attr="stroke-width" min="0" max="99" step="1" />
-        <span class="icon_label">Stroke Width</span>
-      </label>
+    <h4>Chalk</h4>
+    <div class="stroke_tool draginput"> 
+      <span>Static</span>
+      <select id="static" data-title="Change stroke dash style">
+        <option selected="selected" value="false">false</option>
+        <option value="true">true</option>
+      </select>
+      <div class="caret"></div>
+      <label style="font-size: 15px" id="static_label">false</label>
     </div>
     <div class="stroke_tool draginput"> 
       <span>Stroke Dash</span>
@@ -511,6 +527,7 @@
       <span class="icon_label">Stroke Cap</span>
     </label>
   </div>
+
 
 </div> <!-- tools_top -->
   <div id="cur_context_panel">
@@ -575,7 +592,7 @@
     </div>
   </div>
 
-  <div id="tools_bottom_3">
+  <div id="tools_bottom_3" class="hiddenForChalk">
     <div id="palette" title="Click to change fill color, shift-click to change stroke color"></div>
   </div>
 </div>
