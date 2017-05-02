@@ -15,8 +15,11 @@ var SVG2Chalk = (function(){
     var isEditorCreated = false;
     var isPropEditorCreated = false;
 
-    var setup_source_code = "function(context) {\r\n    /* your code goes here */\r\n    context.gameover = false;\r\n}\r\n";
-    var update_source_code = "function(context) {\r\n    /* your code goes here */\r\n    return context.gameover;\r\n}\r\n";
+    var setupEditor = null;
+    var updateEditor = null;
+
+    var setup_source_code = "\r\nfunction setup(context) {\r\n    /* your code goes here */\r\n    context.gameover = false;\r\n}\r\n";
+    var update_source_code = "\r\nfunction update(context) {\r\n    /* your code goes here */\r\n    return context.gameover;\r\n}\r\n";
 
     function run(width, height)
     {
@@ -33,8 +36,8 @@ var SVG2Chalk = (function(){
         var tacks = [];
         var hints = [];
         var decorations = [];
-        var setupFunc = setup_source_code;
-        var updateFunc = update_source_code;
+        var setupFunc = setup_source_code.replace(" setup(", " (").replace(" setup (", " (");
+        var updateFunc = update_source_code.replace(" update(", " (").replace(" setup (", " (");
 
     	var xmlDoc = document.querySelector("#svgcontent");
         var rects = xmlDoc.getElementsByTagName("rect");
@@ -209,6 +212,8 @@ var SVG2Chalk = (function(){
     {
         if(isEditorCreated)
         {
+            setupEditor.setValue(setup_source_code);
+            updateEditor.setValue(update_source_code);
             document.querySelector("#codeEditorContainer").style.zIndex = "2";
             return;
         }
@@ -238,8 +243,8 @@ var SVG2Chalk = (function(){
         setup_container.style.width = "95%";
         setup_container.style.height = "40%";
         setup_container.style.left = "2.5%";
-        //setup_container.style.top = "2.5%";
-        setup_container.style.backgroundColor = "white";
+        setup_container.style.fontSize = "18px";
+        setup_container.style.backgroundColor = "#141414;";
         container.appendChild(setup_container);
 
         var update_label = document.createElement("label");
@@ -256,8 +261,8 @@ var SVG2Chalk = (function(){
         update_container.style.width = "95%";
         update_container.style.height = "40%";
         update_container.style.left = "2.5%";
-        //update_container.style.top = "5%";
-        update_container.style.backgroundColor = "white";
+        update_container.style.fontSize = "18px";
+        update_container.style.backgroundColor = "#141414;";
         container.appendChild(update_container);
 
         var buttons_container = document.createElement("div");
@@ -271,6 +276,18 @@ var SVG2Chalk = (function(){
         //buttons_container.style.backgroundColor = "white";
         container.appendChild(buttons_container);
 
+
+        var cancel = document.createElement("button");
+        cancel.className = "cancel";
+        cancel.innerHTML = "Cancel";
+        cancel.style.float = "left";
+        cancel.style.marginTop = "15px";
+        cancel.style.borderRadius = "5px";
+        cancel.addEventListener("click", function(){
+            document.querySelector("#codeEditorContainer").style.zIndex = "-2";
+        });
+        buttons_container.appendChild(cancel);
+
         var save = document.createElement("button");
         save.className = "ok";
         save.innerHTML = "Apply changes";
@@ -278,25 +295,21 @@ var SVG2Chalk = (function(){
         save.style.borderRadius = "5px";
         save.addEventListener("click", function(){
             document.querySelector("#codeEditorContainer").style.zIndex = "-2";
+            setup_source_code = setupEditor.getValue();
+            update_source_code = updateEditor.getValue();
         });
         buttons_container.appendChild(save);
 
 
         document.body.appendChild(container);
 
-        var flask_setup = new CodeFlask;
-        var flask_update = new CodeFlask;
+        setupEditor = ace.edit("setup_container");
+        setupEditor.setTheme("ace/theme/monokai");
+        setupEditor.getSession().setMode("ace/mode/javascript");
 
-        flask_setup.run('#setup_container', { language: 'javascript', lineNumbers: false });
-        flask_update.run('#update_container', { language: 'javascript', lineNumbers: false });
-
-        flask_setup.onUpdate(function(code) {
-            setup_source_code = code;
-        });
-
-        flask_update.onUpdate(function(code) {
-            update_source_code = code;
-        });
+        updateEditor = ace.edit("update_container");
+        updateEditor.setTheme("ace/theme/monokai");
+        updateEditor.getSession().setMode("ace/mode/javascript");
 
         isEditorCreated = true;
     }
@@ -356,7 +369,7 @@ var SVG2Chalk = (function(){
         var cancel = document.createElement("button");
         cancel.style.marginLeft = "20px";
         cancel.className = "cancel";
-        cancel.innerHTML = "cancel";
+        cancel.innerHTML = "Cancel";
         cancel.style.marginTop = "10px";
         cancel.style.borderRadius = "5px";
         cancel.addEventListener("click", function(){
