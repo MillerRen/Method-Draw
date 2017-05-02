@@ -111,9 +111,9 @@ var SVG2Chalk = (function(){
     		label : element.getAttribute("id"),
             type : "Polygon",
             position : [x, y],
-            category : "bodies",
-            isStatic : element.getAttribute("fill") == "#000000",
-            isSensor : element.getAttribute("stroke") == "#ff0000",
+            category : element.getAttribute("category"),
+            isStatic : element.getAttribute("static") == "true",
+            isSensor : element.getAttribute("sensor") == "sensor",
             vertices : [
                 [-half_width, -half_height],
                 [-half_width, half_height],
@@ -131,18 +131,8 @@ var SVG2Chalk = (function(){
         }
         
         var opacity = element.getAttribute("opacity");
-        if(element.getAttribute("stroke-dasharray") != "none")
+        if(obj.category == "hints" || obj.category == "decorations")
         {
-            obj.category = "hints";
-            obj.vertices.push(obj.vertices[0]);
-            obj.opacity = opacity;
-            delete obj.isStatic;
-            delete obj.isSensor;
-            delete obj.type;
-        }
-        else if(opacity)
-        {
-            obj.category = "decorations";
             obj.vertices.push(obj.vertices[0]);
             obj.opacity = opacity;
             delete obj.isStatic;

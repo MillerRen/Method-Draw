@@ -1706,14 +1706,22 @@
 
       $('#category').change(function(){
         svgCanvas.setStrokeAttr('category', $(this).val() || "bodies");
-        if($(this).val() == "hints")
+        if($(this).val() == "hints" || ($(this).val() == "decorations"))
         {
-            svgCanvas.setStrokeAttr('stroke-dasharray', "10,10");
+            if($(this).val() == "hints")
+                svgCanvas.setStrokeAttr('stroke-dasharray', "10,10");
+            else
+              svgCanvas.setStrokeAttr('stroke-dasharray', "3,3");
+            svgCanvas.setStrokeAttr('fill', "none");
+            svgCanvas.setStrokeAttr('static', "false");
+            $("#static_label").html("false");
         }
         else
         {
             svgCanvas.setStrokeAttr('stroke-dasharray', "none");
         }
+
+
         $("#category_label").html(this.options[this.selectedIndex].text);
         operaRepaint();
       });
