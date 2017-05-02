@@ -10,22 +10,13 @@ var SVG2Chalk = (function(){
     var scale = 0.01;
     var svg_width = 0;
     var svg_height = 0;
-    var title = "Dummy title";
-    var description = "Dummy description";
+    var current_title = "Dummy title";
+    var current_description = "Dummy description";
     var isEditorCreated = false;
+    var isPropEditorCreated = false;
 
-    var setup_source_code = "function(context){\r\n    /* your code goes here */\r\n    context.gameover = false;\r\n}\r\n";
-    var update_source_code = "function(context){\r\n    /* your code goes here */\r\n    return context.gameover;\r\n}\r\n";
-
-    function setTitle(text)
-    {
-        title = text;
-    }
-
-    function setDescription(text)
-    {
-        description = text;
-    }
+    var setup_source_code = "function(context) {\r\n    /* your code goes here */\r\n    context.gameover = false;\r\n}\r\n";
+    var update_source_code = "function(context) {\r\n    /* your code goes here */\r\n    return context.gameover;\r\n}\r\n";
 
     function run(width, height)
     {
@@ -83,8 +74,8 @@ var SVG2Chalk = (function(){
         }
 
         var source = "\r\nLevelSelector.getLevels().push({\r\n" + 
-            "title : '" + title + "',\r\n" +
-            "description : '" + description + "',\r\n" +
+            "title : '" + current_title + "',\r\n" +
+            "description : '" + current_description + "',\r\n" +
             "bodies : " + JSON.stringify(bodies) + ",\r\n" +
             "tacks : " + JSON.stringify(tacks) + ",\r\n" +
             "hints : " + JSON.stringify(hints) + ",\r\n" +
@@ -223,19 +214,21 @@ var SVG2Chalk = (function(){
         }
         var container = document.createElement("div");
         container.id = "codeEditorContainer";
+        container.style.border = "3px solid white";
         container.style.position = "absolute";
         container.style.width = "1000px";
         container.style.height = "750px";
         container.style.left = "50%";
         container.style.top = "50%";
         container.style.margin = "-400px 0 0 -500px";
-        container.style.backgroundColor = "silver";
+        container.style.backgroundColor = "#2F2F2C";
         container.style.borderRadius = "10px";
 
-        var setup_label = document.createElement("h4");
-        setup_label.innerHTML = "Setup function:";
+        var setup_label = document.createElement("label");
+        setup_label.style.lineHeight= "40px";
+        setup_label.innerHTML = "Setup function :";
         setup_label.style.marginLeft = "3%";
-        setup_label.style.color = "black";
+        setup_label.style.color = "white";
         container.appendChild(setup_label);
 
         var setup_container = document.createElement("div");
@@ -249,10 +242,11 @@ var SVG2Chalk = (function(){
         setup_container.style.backgroundColor = "white";
         container.appendChild(setup_container);
 
-        var update_label = document.createElement("h4");
-        update_label.innerHTML = "update function:";
+        var update_label = document.createElement("label");
+        update_label.style.lineHeight= "40px";
+        update_label.innerHTML = "Update function :";
         update_label.style.marginLeft = "3%";
-        update_label.style.color = "black";
+        update_label.style.color = "white";
         container.appendChild(update_label);
 
         var update_container = document.createElement("div");
@@ -279,8 +273,8 @@ var SVG2Chalk = (function(){
 
         var save = document.createElement("button");
         save.className = "ok";
-        save.innerHTML = "OK";
-        save.style.marginTop = "10px";
+        save.innerHTML = "Apply changes";
+        save.style.marginTop = "15px";
         save.style.borderRadius = "5px";
         save.addEventListener("click", function(){
             document.querySelector("#codeEditorContainer").style.zIndex = "-2";
@@ -307,7 +301,89 @@ var SVG2Chalk = (function(){
         isEditorCreated = true;
     }
 
+    function showProperties()
+    {
+        if(isPropEditorCreated)
+        {
+            document.querySelector("#title_input").value = current_title;
+            document.querySelector("#description_input").value = current_description;
+            document.querySelector("#propEditorContainer").style.zIndex = "2";
+            return;
+        }
+        var container = document.createElement("div");
+        container.id = "propEditorContainer";
+        container.style.border = "3px solid white";
+        container.style.position = "absolute";
+        container.style.width = "500px";
+        container.style.height = "230px";
+        container.style.left = "50%";
+        container.style.top = "50%";
+        container.style.margin = "-150px 0 0 -250px";
+        container.style.backgroundColor = "#2F2F2C";
+        container.style.borderRadius = "10px";  
+
+        var title = document.createElement("label");
+        title.style.lineHeight= "40px";
+        title.innerHTML = "Level title :";
+        title.style.marginLeft = "3%";
+        title.style.color = "white";
+        container.appendChild(title);
+
+        var title_input = document.createElement("input");
+        title_input.id = "title_input";
+        title_input.value = current_title;
+        title_input.style.marginLeft = "3%";
+        title_input.style.width = "94%";
+        title_input.style.lineHeight = "30px";
+        container.appendChild(title_input);
+
+        var description = document.createElement("label");
+        description.style.lineHeight= "40px";
+        description.innerHTML = "Level description :";
+        description.style.marginLeft = "2%";
+        description.style.color = "white";
+        container.appendChild(description);
+
+        var description_input = document.createElement("input");
+        description_input.id = "description_input";
+        description_input.style.marginLeft = "3%";
+        description_input.value = current_description;
+        description_input.style.width = "94%";
+        description_input.style.lineHeight = "30px";
+        container.appendChild(description_input);
+        description_input.style.marginBottom = "3%";
+
+        var cancel = document.createElement("button");
+        cancel.style.marginLeft = "20px";
+        cancel.className = "cancel";
+        cancel.innerHTML = "cancel";
+        cancel.style.marginTop = "10px";
+        cancel.style.borderRadius = "5px";
+        cancel.addEventListener("click", function(){
+            document.querySelector("#propEditorContainer").style.zIndex = "-3";
+        });
+        container.appendChild(cancel);
+
+        var save = document.createElement("button");
+        save.className = "ok";
+        save.style.float = "right";
+        save.style.marginRight = "20px";
+        save.innerHTML = "Apply changes";
+        save.style.marginTop = "10px";
+        save.style.borderRadius = "5px";
+        save.addEventListener("click", function(){
+            document.querySelector("#propEditorContainer").style.zIndex = "-3";
+            current_title = document.querySelector("#title_input").value;
+            current_description = document.querySelector("#description_input").value;
+        });
+        container.appendChild(save);
+
+        document.body.appendChild(container);
+        isPropEditorCreated = true;
+    }
+
     return { build : build,
              run   : run,
-             showCodeEditor : showCodeEditor };
+             showCodeEditor : showCodeEditor,
+             showProperties : showProperties };
 })();
