@@ -1320,6 +1320,7 @@
             $('option', '#stroke_style').removeAttr('selected');
             $('#stroke_style option[value="'+ dash +'"]').attr("selected", "selected");
             $('#stroke_style').trigger('change');
+            $('#static').trigger('change');
 
             //$.fn.dragInput.updateCursor($('#stroke_width')[0])
             $.fn.dragInput.updateCursor($('#blur')[0])
@@ -1687,7 +1688,7 @@
       });
 
       $('#static').change(function(){
-        svgCanvas.setStrokeAttr('static', $(this).val());
+        svgCanvas.setStrokeAttr('static', $(this).val() || "false");
         if($(this).val() == "true")
         {
             svgCanvas.setStrokeAttr('fill', "#000000");
@@ -1696,7 +1697,7 @@
         {
             svgCanvas.setStrokeAttr('fill', "none");
         }
-        $("#static_label").html(this.options[this.selectedIndex].text)
+        $("#static_label").html(this.options[this.selectedIndex].text);
         operaRepaint();
       });
       
