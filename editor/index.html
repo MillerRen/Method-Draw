@@ -12,6 +12,12 @@
   <link rel="stylesheet" href="lib/jgraduate/css/jgraduate.css" type="text/css"/>
   <link rel="stylesheet" href="css/method-draw.css" type="text/css"/>
   <link rel="stylesheet" href="css/fonts.css" type="text/css"/>
+
+  <link rel="stylesheet" href="https://rawgithub.com/kazzkiq/CodeFlask.js/master/test/lib/prism.min.css">
+  <link rel="stylesheet" href="https://rawgithub.com/kazzkiq/CodeFlask.js/master/src/codeflask.css">
+  <script src="https://rawgithub.com/kazzkiq/CodeFlask.js/master/test/lib/prism.min.js" async></script>
+  <script src="https://rawgithub.com/kazzkiq/CodeFlask.js/master/src/codeflask.js" async></script>
+
   <style>
   .hiddenForChalk
   {
@@ -160,9 +166,10 @@
         <div onclick="SVG2Chalk.run(1000,618);" class="menu_item" id="tool_rulers">Run (1000 x 618)</div>
         <div onclick="SVG2Chalk.run(1400,865);" class="menu_item" id="tool_rulers">Run (1400 x 865)</div>
         <div class="separator"></div>
-        <div onclick="SVG2Chalk.export();" class="menu_item" id="tool_rulers">Export level ...</div>
-        <div class="separator"></div>
         <div onclick="SVG2Chalk.showProperties()" class="menu_item" id="tool_rulers">Level properties</div>
+        <div onclick="SVG2Chalk.showCodeEditor()" class="menu_item" id="tool_rulers">Edit level code</div>
+        <div class="separator"></div>
+        <div onclick="SVG2Chalk.export();" class="menu_item" id="tool_rulers">Export level ...</div>
     </div>
   </div>
   

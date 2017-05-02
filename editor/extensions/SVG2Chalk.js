@@ -12,6 +12,10 @@ var SVG2Chalk = (function(){
     var svg_height = 0;
     var title = "Dummy title";
     var description = "Dummy description";
+    var isEditorCreated = false;
+
+    var setup_source_code = "function(context){\r\n    /* your code goes here */\r\n    context.gameover = false;\r\n}\r\n";
+    var update_source_code = "function(context){\r\n    /* your code goes here */\r\n    return context.gameover;\r\n}\r\n";
 
     function setTitle(text)
     {
@@ -38,8 +42,8 @@ var SVG2Chalk = (function(){
         var tacks = [];
         var hints = [];
         var decorations = [];
-        var setupFunc = "function(context){}";
-        var updateFunc = "function(context){}";
+        var setupFunc = setup_source_code;
+        var updateFunc = update_source_code;
 
     	var xmlDoc = document.querySelector("#svgcontent");
         var rects = xmlDoc.getElementsByTagName("rect");
@@ -210,6 +214,100 @@ var SVG2Chalk = (function(){
         return value;
     }
 
+    function showCodeEditor()
+    {
+        if(isEditorCreated)
+        {
+            document.querySelector("#codeEditorContainer").style.zIndex = "2";
+            return;
+        }
+        var container = document.createElement("div");
+        container.id = "codeEditorContainer";
+        container.style.position = "absolute";
+        container.style.width = "1000px";
+        container.style.height = "750px";
+        container.style.left = "50%";
+        container.style.top = "50%";
+        container.style.margin = "-400px 0 0 -500px";
+        container.style.backgroundColor = "silver";
+        container.style.borderRadius = "10px";
+
+        var setup_label = document.createElement("h4");
+        setup_label.innerHTML = "Setup function:";
+        setup_label.style.marginLeft = "3%";
+        setup_label.style.color = "black";
+        container.appendChild(setup_label);
+
+        var setup_container = document.createElement("div");
+        setup_container.id = "setup_container";
+        setup_container.innerHTML = setup_source_code;
+        setup_container.style.position = "relative";
+        setup_container.style.width = "95%";
+        setup_container.style.height = "40%";
+        setup_container.style.left = "2.5%";
+        //setup_container.style.top = "2.5%";
+        setup_container.style.backgroundColor = "white";
+        container.appendChild(setup_container);
+
+        var update_label = document.createElement("h4");
+        update_label.innerHTML = "update function:";
+        update_label.style.marginLeft = "3%";
+        update_label.style.color = "black";
+        container.appendChild(update_label);
+
+        var update_container = document.createElement("div");
+        update_container.innerHTML = update_source_code;
+        update_container.id = "update_container";
+        update_container.style.position = "relative";
+        update_container.style.width = "95%";
+        update_container.style.height = "40%";
+        update_container.style.left = "2.5%";
+        //update_container.style.top = "5%";
+        update_container.style.backgroundColor = "white";
+        container.appendChild(update_container);
+
+        var buttons_container = document.createElement("div");
+        buttons_container.id = "buttons_container";
+        buttons_container.style.textAlign = "right";
+        buttons_container.style.position = "relative";
+        buttons_container.style.width = "95%";
+        //buttons_container.style.height = "2%";
+        buttons_container.style.left = "2.5%";
+        //buttons_container.style.top = "7.5%";
+        //buttons_container.style.backgroundColor = "white";
+        container.appendChild(buttons_container);
+
+        var save = document.createElement("button");
+        save.className = "ok";
+        save.innerHTML = "OK";
+        save.style.marginTop = "10px";
+        save.style.borderRadius = "5px";
+        save.addEventListener("click", function(){
+            document.querySelector("#codeEditorContainer").style.zIndex = "-2";
+        });
+        buttons_container.appendChild(save);
+
+
+        document.body.appendChild(container);
+
+        var flask_setup = new CodeFlask;
+        var flask_update = new CodeFlask;
+
+        flask_setup.run('#setup_container', { language: 'javascript', lineNumbers: false });
+        flask_update.run('#update_container', { language: 'javascript', lineNumbers: false });
+
+        flask_setup.onUpdate(function(code) {
+            setup_source_code = code;
+        });
+
+        flask_update.onUpdate(function(code) {
+            update_source_code = code;
+        });
+
+        isEditorCreated = true;
+    }
+
     return { build : build,
-             run   : run };
+             run   : run,
+             showCodeEditor : showCodeEditor };
 })();
