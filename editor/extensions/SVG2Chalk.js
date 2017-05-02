@@ -10,6 +10,18 @@ var SVG2Chalk = (function(){
     var scale = 0.01;
     var svg_width = 0;
     var svg_height = 0;
+    var title = "Dummy title";
+    var description = "Dummy description";
+
+    function setTitle(text)
+    {
+        title = text;
+    }
+
+    function setDescription(text)
+    {
+        description = text;
+    }
 
     function run(width, height)
     {
@@ -22,8 +34,6 @@ var SVG2Chalk = (function(){
 
     function build()
     {
-        var title = "Dummy title";
-        var description = "Dummy description";
         var bodies = [];
         var tacks = [];
         var hints = [];
