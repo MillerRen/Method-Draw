@@ -1737,7 +1737,7 @@
         }
         else
         {
-            svgCanvas.setStrokeAttr('opacity', "none");
+            svgCanvas.setStrokeAttr('opacity', "1.0");
         }
 
         $("#sensor_label").html(this.options[this.selectedIndex].text);
