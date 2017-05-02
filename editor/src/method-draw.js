@@ -1313,14 +1313,17 @@
             
             $('#stroke_width').val(selectedElement.getAttribute("stroke-width") || 0);
 
-            $('#static').val(selectedElement.getAttribute("static") || false);
+            $('#static').val(selectedElement.getAttribute("static") || "false");
             $("#static_label").html(selectedElement.getAttribute("static") || "false");
+            $('#category').val(selectedElement.getAttribute("category") || "bodies");
+            $("#category_label").html(selectedElement.getAttribute("category") || "bodies");
 
             var dash = selectedElement.getAttribute("stroke-dasharray") || "none"
             $('option', '#stroke_style').removeAttr('selected');
             $('#stroke_style option[value="'+ dash +'"]').attr("selected", "selected");
             $('#stroke_style').trigger('change');
             $('#static').trigger('change');
+            $('#category').trigger('change');
 
             //$.fn.dragInput.updateCursor($('#stroke_width')[0])
             $.fn.dragInput.updateCursor($('#blur')[0])
@@ -1698,6 +1701,20 @@
             svgCanvas.setStrokeAttr('fill', "none");
         }
         $("#static_label").html(this.options[this.selectedIndex].text);
+        operaRepaint();
+      });
+
+      $('#category').change(function(){
+        svgCanvas.setStrokeAttr('category', $(this).val() || "bodies");
+        if($(this).val() == "hints")
+        {
+            svgCanvas.setStrokeAttr('stroke-dasharray', "10,10");
+        }
+        else
+        {
+            svgCanvas.setStrokeAttr('stroke-dasharray', "none");
+        }
+        $("#category_label").html(this.options[this.selectedIndex].text);
         operaRepaint();
       });
       

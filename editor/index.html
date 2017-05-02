@@ -499,12 +499,23 @@
     <h4>Chalk</h4>
     <div class="stroke_tool draginput"> 
       <span>Static</span>
-      <select id="static" data-title="Change stroke dash style">
+      <select id="static" data-title="Change static property">
         <option selected="selected" value="false">false</option>
         <option value="true">true</option>
       </select>
       <div class="caret"></div>
-      <label style="font-size: 15px" id="static_label">false</label>
+      <label style="font-size: 12px" id="static_label">false</label>
+    </div>
+    <div class="stroke_tool draginput"> 
+      <span>Category</span>
+      <select id="category" data-title="Change category property">
+        <option selected="selected" value="bodies">bodies</option>
+        <option value="hints">hints</option>
+        <option value="hints">decorations</option>
+        <option value="hints">tacks</option>
+      </select>
+      <div class="caret"></div>
+      <label style="font-size: 12px" id="category_label">bodies</label>
     </div>
     <div class="stroke_tool draginput hiddenForChalk"> 
       <span>Stroke Dash</span>
