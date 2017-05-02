@@ -1697,7 +1697,7 @@
         svgCanvas.setStrokeAttr('static', $(this).val() || "false");
         if($(this).val() == "true")
         {
-            svgCanvas.setStrokeAttr('fill', "#000000");
+            svgCanvas.setStrokeAttr('fill', "url(#diagonal-stripe-1)");
         }
         else
         {

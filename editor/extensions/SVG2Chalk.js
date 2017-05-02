@@ -169,9 +169,9 @@ var SVG2Chalk = (function(){
             label : element.getAttribute("id"),
             type : "circle",
             position : [x, y],
-            category : "bodies",
-            isStatic : element.getAttribute("fill") == "#000000",
-            isSensor : element.getAttribute("stroke") == "#ff0000",
+            category : element.getAttribute("category"),
+            isStatic : element.getAttribute("static") == "true",
+            isSensor : element.getAttribute("sensor") == "true",
             radio : radius,
         };
 
