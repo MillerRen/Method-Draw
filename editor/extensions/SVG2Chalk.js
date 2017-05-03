@@ -134,7 +134,7 @@ var SVG2Chalk = (function(){
         y -= half_height;
 
     	var obj = {
-    		label : element.getAttribute("id"),
+    		label : element.getAttribute("label") || "untitled-shape",
             type : "Polygon",
             position : [x, y],
             category : element.getAttribute("category"),
@@ -246,7 +246,7 @@ var SVG2Chalk = (function(){
 
 
         var obj = {
-            label : element.getAttribute("id"),
+            label : element.getAttribute("label") || "untitled-shape",
             type : "polygon",
             position : [0, 0],
             category : element.getAttribute("category") || "bodies",
@@ -254,9 +254,6 @@ var SVG2Chalk = (function(){
             isSensor : element.getAttribute("sensor") == "true",
             vertices : parseVertices(element.getAttribute("d")),
         };
-
-
-        console.log(centroid);
 
         for(var i = 0; i < obj.vertices.length; i++)
         {
@@ -296,7 +293,7 @@ var SVG2Chalk = (function(){
         y = (svg_height -  y);
 
         var obj = {
-            label : element.getAttribute("id"),
+            label : element.getAttribute("label") || "untitled-shape",
             type : "circle",
             position : [x, y],
             category : element.getAttribute("category"),
@@ -304,6 +301,20 @@ var SVG2Chalk = (function(){
             isSensor : element.getAttribute("sensor") == "true",
             radio : radius,
         };
+
+        if(obj.category == "tacks")
+        {
+            delete obj.isSensor;
+            delete obj.isStatic;
+            delete obj.radio;
+            delete obj.type;
+            obj.bodyA = element.getAttribute("bodyA");
+            obj.bodyB = element.getAttribute("bodyB");
+            if(obj.bodyB == "")
+            {
+                obj.bodyB = "null";
+            }
+        }
 
         return obj;
     }
