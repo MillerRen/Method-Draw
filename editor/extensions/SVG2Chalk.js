@@ -76,6 +76,20 @@ var SVG2Chalk = (function(){
             }
         }
 
+        for(var i = 0; i < paths.length; i++)
+        {
+            var shape =  createShapeFromPath(paths[i]);
+            var category = shape.category;
+            delete shape.category;
+            switch(category)
+            {
+                case "bodies" : { bodies.push(shape); break; }
+                case "tacks" : { tacks.push(shape); break; }
+                case "hints" : { hints.push(shape); break; }
+                case "decoration" : { decorations.push(shape); break; }
+            }
+        }
+
         var source = "\r\nLevelSelector.getLevels().push({\r\n" + 
             "title : '" + current_title + "',\r\n" +
             "description : '" + current_description + "',\r\n" +
@@ -151,17 +165,115 @@ var SVG2Chalk = (function(){
         return obj;
     }
 
+    function replaceAll(str, find, replace)
+    {
+        var copy = str.split(find);
+        return copy.join(replace);
+    }
+
+    function parseVertices(svgDAttribute)
+    {
+        var poly = [];
+        var x, y;
+
+        svgDAttribute = svgDAttribute.toLowerCase();
+        svgDAttribute = replaceAll(svgDAttribute, "m"," ");
+        svgDAttribute = replaceAll(svgDAttribute, "l"," ");
+        svgDAttribute = replaceAll(svgDAttribute, "c"," ");
+        svgDAttribute = replaceAll(svgDAttribute, "z"," ");
+        svgDAttribute = replaceAll(svgDAttribute, ","," ");
+
+        svgDAttribute = svgDAttribute.split(" ");
+        for(var i = svgDAttribute.length-1; i >= 0; i--)
+        {
+            if( svgDAttribute[i].length == 0)
+            {
+                svgDAttribute.splice(i,1);
+            }
+        }
+
+        for(var i = 0; i < svgDAttribute.length; i += 2)
+        {
+            x = scaleIt(svgDAttribute[i]);
+            y = scaleIt(svgDAttribute[i + 1]);
+            //x = x - (svg_width>>1);
+            //y = (svg_height -  y);
+            var last = poly.length -1;
+            if(i == 0 || poly[last][0] != x || poly[last][1] != y)
+                poly.push([ x , y ]);
+        }
+
+        poly.splice(poly.length-1,1);
+
+        console.log(poly);
+        return poly;
+    }
+
     function createShapeFromPath(element)
     {
-    	return {
-    		label : element.getAttribute("id"),
+
+        var centroid = [0,0];
+        var rotation = element.getAttribute("transform") || "";
+        if(rotation.indexOf("rotate") == 0)
+        {
+
+            rotation = rotation.replace("rotate(","");
+            rotation = rotation.replace(","," ");
+            var aux = rotation.split(" ");
+            rotation = aux[0];
+            centroid[0] = scaleIt(parseFloat(aux[1]));
+            centroid[1] = scaleIt(parseFloat(aux[2]));
+            rotation = parseFloat(rotation) * Math.PI / 180;
+        }
+        else
+        {
+            rotation = 0.0;
+        }
+
+
+        //x -= (svg_width>>1)
+        //y = (svg_height -  y);
+
+
+        var obj = {
+            label : element.getAttribute("id"),
             type : "polygon",
-            position : [element.getAttribute("cx"),element.getAttribute("cy")],
-            radio : element.getAttribute("rx"),
-            category : "bodies",
-            isStatic : element.getAttribute("fill") == "#000000",
-            isSensor : element.getAttribute("stroke") == "#ff0000",
-    	};
+            position : [0, 0],
+            category : element.getAttribute("category") || "bodies",
+            isStatic : element.getAttribute("static") == "true",
+            isSensor : element.getAttribute("sensor") == "true",
+            vertices : parseVertices(element.getAttribute("d")),
+        };
+
+
+        console.log(centroid);
+
+        for(var i = 0; i < obj.vertices.length; i++)
+        {
+            var x = obj.vertices[i][0] - centroid[0];
+            var y = obj.vertices[i][1] - centroid[1];
+
+            obj.vertices[i][0] = (x  * Math.cos(rotation)) - (y * Math.sin(rotation)); 
+            obj.vertices[i][1] = (y * Math.cos(rotation)) + (x * Math.sin(rotation));
+
+            obj.vertices[i][0] += centroid[0];
+            obj.vertices[i][1] += centroid[1];
+
+            obj.vertices[i][0] -= (svg_width>>1);
+            obj.vertices[i][1] = (svg_height - obj.vertices[i][1]);
+        }
+        
+        var opacity = element.getAttribute("opacity");
+        if(obj.category == "hints" || obj.category == "decorations")
+        {
+            obj.vertices.push(obj.vertices[0]);
+            obj.opacity = opacity;
+            delete obj.isStatic;
+            delete obj.isSensor;
+            delete obj.type;
+        }
+
+        return obj;
     }
 
     function createShapeFromEllipse(element)
@@ -193,7 +305,7 @@ var SVG2Chalk = (function(){
             for(var i = 0; i < value.length;  i++)
             {
                 value[i][1] *= scale;
-                value[i][0] *= -scale;
+                value[i][0] *= scale;
             }
         }
         else if(value.constructor == Array)
