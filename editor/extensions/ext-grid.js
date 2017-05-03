@@ -50,7 +50,7 @@ methodDraw.addExtension("view_grid", function(s) {
             'width': 10,
             'height': 10
         });
-        staticPattern.innerHTML = '<image xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QUDAig7JEvR+QAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAWklEQVQY02P8//8/AwHwg4GBgY2JgKJvDAwM7AwMDKcY/v//jwt//A8BJ/7//89AlCJcCt+iK8Km8Do2RegKT0AVPcbmHBhjCz5FMIUzCSmCKfwHdRu+oGIAAPchCTd8U/hQAAAAAElFTkSuQmCC" x="0" y="0" width="10" height="10"> </image>';
+        staticPattern.innerHTML = '<image xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QUDAjIy7bqThgAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAARElEQVQY043QMQoAIAwEwY2I/v+zYndWQhBNvGqLqc4kCTDem0CrCRpAB6gBkmsrPwig/KAbvKITPpGHIdowRSeM/tQCgxMPEIz0Hw4AAAAASUVORK5CYII=" x="0" y="0" width="10" height="10"> </image>';
         $('#svgroot defs').append(staticPattern);
 
         // grid-pattern
