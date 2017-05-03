@@ -90,6 +90,10 @@ var SVG2Chalk = (function(){
             }
         }
 
+
+        var serializer = new XMLSerializer();
+        var str = serializer.serializeToString(cb.parentElement.parentElement);
+
         var source = "\r\nLevelSelector.getLevels().push({\r\n" + 
             "title : '" + current_title + "',\r\n" +
             "description : '" + current_description + "',\r\n" +
@@ -99,7 +103,7 @@ var SVG2Chalk = (function(){
             "decorations : " + JSON.stringify(decorations) + ",\r\n" +
             "setup : " + setupFunc + ",\r\n" +
             "update : " + updateFunc + ",\r\n" +
-        "});\r\n\r\n\r\n/*\r\n Generated from SVG: \r\n" + cb.outerHTML + "\r\n*/";
+        "});\r\n\r\n\r\n/*\r\n Generated from SVG: \r\n" + str + "\r\n*/";
     	return source;
     }
 
