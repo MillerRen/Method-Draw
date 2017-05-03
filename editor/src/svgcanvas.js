@@ -5581,6 +5581,25 @@ this.save = function(opts) {
   }
 };
 
+// Function: exportChalkLevel
+this.exportChalkLevel = function(opts) {
+  
+  clearSelection();
+  if(opts) $.extend(save_options, opts);
+  save_options.apply = true;
+  
+  var str = js_beautify(SVG2Chalk.build());//this.svgCanvasToString();
+
+  if (svgedit.browser.supportsBlobs()) {
+    var blob = new Blob([ str ], {type: "application/javascript"});
+    var dropAutoBOM = true;
+    saveAs(blob, "new-level.js", dropAutoBOM);
+  }
+  else {
+    call("saved", str);
+  }
+};
+
 // Function: rasterExport
 // Generates a PNG Data URL based on the current image, then calls "exported" 
 // with an object including the string and any issues found

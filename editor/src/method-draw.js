@@ -2616,6 +2616,14 @@
         }
         svgCanvas.save(saveOpts);
       };
+
+      var clickExportChalkLevel = function(){
+          var saveOpts = {
+            'images': curPrefs.img_save,
+            'round_digits': 6
+          }
+          svgCanvas.exportChalkLevel(saveOpts);
+      }
       
       var saveSourceEditor = function(){
         if (!editingsource) return;
@@ -3300,6 +3308,7 @@
           {sel:'#tool_zoom', fn: clickZoom, evt: 'mouseup', key: ['Z', true]},
           {sel:'#tool_clear', fn: clickClear, evt: 'mouseup', key: [modKey + 'N', true]},
           {sel:'#tool_save', fn: function() { editingsource ? saveSourceEditor(): clickSave() }, evt: 'mouseup', key: [modKey + 'S', true]},
+          {sel:'#export_chalk_level', fn: function() {  clickExportChalkLevel() }, evt: 'mouseup', key: [modKey + 'E', true]},
           {sel:'#tool_export', fn: clickExport, evt: 'mouseup'},
           {sel:'#tool_open', fn: clickOpen, evt: 'mouseup'},
           {sel:'#tool_import', fn: clickImport, evt: 'mouseup'},
