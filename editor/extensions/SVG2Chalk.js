@@ -99,7 +99,7 @@ var SVG2Chalk = (function(){
             "decorations : " + JSON.stringify(decorations) + ",\r\n" +
             "setup : " + setupFunc + ",\r\n" +
             "update : " + updateFunc + ",\r\n" +
-        "});\r\n\r\n\r\n/*\r\n Generated from SVG: \r\n" + cb.toString() + "\r\n*/";
+        "});\r\n\r\n\r\n/*\r\n Generated from SVG: \r\n" + cb.outerHTML + "\r\n*/";
     	return source;
     }
 
@@ -165,6 +165,18 @@ var SVG2Chalk = (function(){
         return obj;
     }
 
+    function insert(array, item)
+    {
+        for(var i = 0; i < array.length; i++)
+        {
+            if(array[i][0] == item[0] && array[i][1] == item[1])
+            {
+                return;
+            }
+        }
+        array.push(item);
+    }
+
     function replaceAll(str, find, replace)
     {
         var copy = str.split(find);
@@ -196,14 +208,8 @@ var SVG2Chalk = (function(){
         {
             x = scaleIt(svgDAttribute[i]);
             y = scaleIt(svgDAttribute[i + 1]);
-            //x = x - (svg_width>>1);
-            //y = (svg_height -  y);
-            var last = poly.length -1;
-            if(i == 0 || poly[last][0] != x || poly[last][1] != y)
-                poly.push([ x , y ]);
+            insert(poly, [ x , y ]);
         }
-
-        poly.splice(poly.length-1,1);
 
         console.log(poly);
         return poly;
