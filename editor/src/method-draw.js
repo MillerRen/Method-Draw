@@ -29,8 +29,8 @@
     curConfig = {
       canvas_expansion: 1, 
       dimensions: [2000, 1236], 
-      initFill: {color: 'fff', opacity: 1},
-      initStroke: {width: 5.0, color: '000', opacity: 1},
+      initFill: {color: 'none', opacity: 1},
+      initStroke: {width: 5.0, color: 'fff', opacity: 1},
       initOpacity: 1,
       imgPath: 'images/',
       extPath: 'extensions/',
@@ -1250,20 +1250,39 @@
       
       var createBackground = function(fill) {
         svgCanvas.createLayer("background")
+        //cur_shape = svgCanvas.addSvgElementFromJson({
+        //  "element": "rect",
+        //  "attr": {
+        //    "x": -1,
+        //    "y": -1,
+        //    "width": res.w+2,
+        //    "height": res.h+2,
+        //    "stroke": "none",
+        //    "id": "canvas_background",
+        //    "opacity": 1,
+        //    "fill": fill || "#000",
+        //    "style": "pointer-events:none"
+        //  }
+        //});
+
         cur_shape = svgCanvas.addSvgElementFromJson({
-          "element": "rect",
+          "element": "image",
           "attr": {
-            "x": -1,
-            "y": -1,
+            "x": 0,
+            "y": 0,
             "width": res.w+2,
             "height": res.h+2,
+            //"width": "100%",
+            //"height": "100%",
             "stroke": "none",
             "id": "canvas_background",
             "opacity": 1,
-            "fill": fill || "#fff",
+            "fill": fill || "#000",
+            "xlink:href": "./images/chalkboard.png",
             "style": "pointer-events:none"
           }
         });
+
         svgCanvas.setCurrentLayer("Layer 1")
         svgCanvas.setCurrentLayerPosition("1")
       }

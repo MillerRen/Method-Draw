@@ -50,7 +50,7 @@ methodDraw.addExtension("view_grid", function(s) {
             'width': 10,
             'height': 10
         });
-        staticPattern.innerHTML = '<image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgICAgICAgICAgTTAsMTAgbDEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJyBzdHJva2Utd2lkdGg9JzEnLz4KPC9zdmc+Cg==" x="0" y="0" width="10" height="10"> </image>';
+        staticPattern.innerHTML = '<image xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QUDAig7JEvR+QAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAWklEQVQY02P8//8/AwHwg4GBgY2JgKJvDAwM7AwMDKcY/v//jwt//A8BJ/7//89AlCJcCt+iK8Km8Do2RegKT0AVPcbmHBhjCz5FMIUzCSmCKfwHdRu+oGIAAPchCTd8U/hQAAAAAElFTkSuQmCC" x="0" y="0" width="10" height="10"> </image>';
         $('#svgroot defs').append(staticPattern);
 
         // grid-pattern

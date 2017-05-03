@@ -48,7 +48,7 @@ var SVG2Chalk = (function(){
         svg_width = scaleIt(cb.getAttribute("width"));
         svg_height = scaleIt(cb.getAttribute("height"));
 
-        for(var i = 2; i < rects.length; i++)
+        for(var i = 1; i < rects.length; i++)
         {
             var shape =  createShapeFromRect(rects[i]);
             var category = shape.category;
