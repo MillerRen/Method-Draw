@@ -25,8 +25,7 @@ var SVG2Chalk = (function(){
     {
         var source = build();
         var source = btoa(source);
-        //var url = "file:///C:/Users/david.landeros/Documents/HTML5%20Projects/airconsole-project1/src/screen.html?loadLevel=" + source
-        var url = "https://rawgithub.com/DavidLanderosAlcala/airconsole-project1/37a58005e7853849a72109e65a65a007888dbf45/src/screen.html#" + source
+        var url = "https://rawgithub.com/DavidLanderosAlcala/airconsole-project1/engine-migration/src/screen.html#" + source
         window.open(url, "", "width=" + width + ",height=" + height);
     }
 
