@@ -134,7 +134,7 @@ var SVG2Chalk = (function(){
 
     	var obj = {
     		label : element.getAttribute("label") || "untitled-shape",
-            type : "Polygon",
+            type : "polygon",
             position : [x, y],
             category : element.getAttribute("category"),
             isStatic : element.getAttribute("static") == "true",
