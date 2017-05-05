@@ -5593,7 +5593,7 @@ this.exportChalkLevel = function(opts) {
   if (svgedit.browser.supportsBlobs()) {
     var blob = new Blob([ str ], {type: "application/javascript"});
     var dropAutoBOM = true;
-    saveAs(blob, "new-level.js", dropAutoBOM);
+    saveAs(blob, SVG2Chalk.getCurrentTitle().replace(" ","-") + ".js", dropAutoBOM);
   }
   else {
     call("saved", str);
