@@ -38,16 +38,15 @@ var SVG2Chalk = (function(){
         var setupFunc = setup_source_code.replace(" setup(", " (").replace(" setup (", " (");
         var updateFunc = update_source_code.replace(" update(", " (").replace(" setup (", " (");
 
-    	var xmlDoc = document.querySelector("#svgcontent");
+    	var xmlDoc = document.querySelector("#svgcontent > g:nth-child(2)"); 
         var rects = xmlDoc.getElementsByTagName("rect");
         var ellipses = xmlDoc.getElementsByTagName("ellipse");
         var paths = xmlDoc.getElementsByTagName("path");
 
-        var cb = xmlDoc.getElementById("canvas_background");
-        svg_width = scaleIt(cb.getAttribute("width"));
-        svg_height = scaleIt(cb.getAttribute("height"));
+        svg_width = scaleIt(2000);
+        svg_height = scaleIt(1236);
 
-        for(var i = 1; i < rects.length; i++)
+        for(var i = 0; i < rects.length; i++)
         {
             var shape =  createShapeFromRect(rects[i]);
             var category = shape.category;
@@ -71,7 +70,7 @@ var SVG2Chalk = (function(){
                 case "bodies" : { bodies.push(shape); break; }
                 case "tacks" : { tacks.push(shape); break; }
                 case "hints" : { hints.push(shape); break; }
-                case "decoration" : { decorations.push(shape); break; }
+                case "decorations" : { decorations.push(shape); break; }
             }
         }
 
@@ -85,13 +84,13 @@ var SVG2Chalk = (function(){
                 case "bodies" : { bodies.push(shape); break; }
                 case "tacks" : { tacks.push(shape); break; }
                 case "hints" : { hints.push(shape); break; }
-                case "decoration" : { decorations.push(shape); break; }
+                case "decorations" : { decorations.push(shape); break; }
             }
         }
 
 
-        var serializer = new XMLSerializer();
-        var str = serializer.serializeToString(cb.parentElement.parentElement);
+        //var serializer = new XMLSerializer();
+        var str = xmlDoc.innerHTML;//serializer.serializeToString(xmlDoc.innerHTML);
 
         var source = "\r\nLevelSelector.getLevels().push({\r\n" + 
             "title : '" + current_title + "',\r\n" +
@@ -530,5 +529,8 @@ var SVG2Chalk = (function(){
     return { build : build,
              run   : run,
              showCodeEditor : showCodeEditor,
-             showProperties : showProperties };
+             showProperties : showProperties,
+             importLevel : function(){
+                document.querySelector("#svgcontent > g:nth-child(2)").innerHTML = '<title style="pointer-events:inherit">Layer 1</title><rect fill="url(#diagonal-stripe-1)" stroke="#fff" stroke-width="5" style="pointer-events:inherit" x="122.49969188866038" y="1035.166623227708" width="1755.0006355362018" height="198.33340515556313" id="svg_1" stroke-dasharray="none" static="true" category="bodies" sensor="false" opacity="1.0"></rect><rect fill="url(#diagonal-stripe-1)" stroke="#fff" stroke-width="5" x="255.8330519701965" y="569.6666733646753" width="695.0002516795785" height="68.33335807880746" id="svg_2" stroke-dasharray="none" static="true" category="bodies" sensor="false" opacity="1.0" transform="rotate(33.71042251586914 603.3331909179689,603.8333740234375) "></rect><ellipse fill="none" stroke="#fff" stroke-width="5" stroke-opacity="null" fill-opacity="null" style="pointer-events:inherit" cx="457.499778113753" cy="207.99987695847946" id="svg_3" rx="41.66668175537046" ry="41.666681755370405" stroke-dasharray="none" static="false" category="bodies" sensor="false" opacity="1.0"></ellipse><path fill="none" stroke="#fff" stroke-width="5" stroke-opacity="null" fill-opacity="null" d="M 1350.8334349488946 449.66663113962784 C 1349.16676767868 449.66663113962784 1245.8333969253613 267.9998986862129 1245.0004044581922 266.66675329760477 C 1245.8333969253613 267.9998986862129 1435.8334657298503 192.99987152654612 1445.8334693511392 192.99987152654612 C 1455.8334729724281 192.99987152654612 1877.5002923367765 267.9998986862129 1876.6672763318936 266.66675329760477 C 1877.5002923367765 267.9998986862129 1907.5003032006432 588.0000145674576 1906.6672860778742 586.6668572547305 C 1907.5003032006432 588.0000145674576 1369.1667749212575 691.3333853207762 1374.166776731902 691.3333853207762 C 1379.1667785425466 691.3333853207762 1557.500176455532 603.0000199993909 1556.667172374768 601.6668621277207 C 1557.500176455532 603.0000199993909 1645.833541776917 416.3332857353315 1645.0005344045994 415.00013481939743 C 1645.833541776917 416.3332857353315 1530.8335001320947 327.99992041394626 1530.0004970450075 326.66677278956587 C 1530.8335001320947 327.99992041394626 1377.5001112723317 339.66659130544997 1376.6671138988847 338.33344324633606 C 1377.5001112723317 339.66659130544997 1352.5001022191093 449.66663113962784 1350.8334349488946 449.66663113962784 z" id="svg_4" stroke-dasharray="10,10" static="false" category="hints" sensor="false" opacity="0.34"></path>';
+             } };
 })();
