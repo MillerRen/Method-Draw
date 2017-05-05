@@ -443,6 +443,22 @@ var SVG2Chalk = (function(){
         updateEditor.setTheme("ace/theme/monokai");
         updateEditor.getSession().setMode("ace/mode/javascript");
 
+        $('#setup_container').on('mousewheel', function(e, delta, deltaX, deltaY){
+          if (e.altKey || e.ctrlKey) {
+            e.preventDefault();
+            var fontSize = parseInt(document.querySelector("#setup_container").style.fontSize.replace("px",""));
+            document.querySelector("#setup_container").style.fontSize = (fontSize + deltaY) + "px";
+          }
+        });
+
+        $('#update_container').on('mousewheel', function(e, delta, deltaX, deltaY){
+          if (e.altKey || e.ctrlKey) {
+            e.preventDefault();
+            var fontSize = parseInt(document.querySelector("#update_container").style.fontSize.replace("px",""));
+            document.querySelector("#update_container").style.fontSize = (fontSize + deltaY) + "px";
+          }
+        });
+
         isEditorCreated = true;
     }
 
