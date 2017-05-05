@@ -537,7 +537,7 @@ var SVG2Chalk = (function(){
             svg : document.querySelector("#svgcontent > g:nth-child(2)").innerHTML,
         };
 
-        saveData(project, current_title + ".chalkproj");
+        saveData(project, current_title.replace(" ","-") + ".chalkproj");
     }
 
     function initProjectFileInput()
