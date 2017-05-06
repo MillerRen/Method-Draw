@@ -354,17 +354,17 @@ var SVG2Chalk = (function(){
         container.id = "codeEditorContainer";
         container.style.border = "3px solid white";
         container.style.position = "absolute";
-        container.style.width = "1000px";
-        container.style.height = "750px";
-        container.style.left = "50%";
-        container.style.top = "50%";
-        container.style.margin = "-400px 0 0 -500px";
+        container.style.width = "90%";
+        container.style.height = "90%";
+        container.style.left = "5%";
+        container.style.top = "5%";
         container.style.backgroundColor = "#2F2F2C";
         container.style.borderRadius = "10px";
+        container.style.zIndex = 10;
 
         var setup_label = document.createElement("label");
         setup_label.style.lineHeight= "40px";
-        setup_label.innerHTML = "Setup function :";
+        setup_label.innerHTML = "Level behavior:";
         setup_label.style.marginLeft = "3%";
         setup_label.style.color = "white";
         container.appendChild(setup_label);
@@ -373,9 +373,11 @@ var SVG2Chalk = (function(){
         setup_container.id = "setup_container";
         setup_container.innerHTML = setup_source_code;
         setup_container.style.position = "relative";
-        setup_container.style.width = "95%";
-        setup_container.style.height = "40%";
+        setup_container.style.display = "inline-block";
+        setup_container.style.width = "45%";
+        setup_container.style.height = "82%";
         setup_container.style.left = "2.5%";
+        setup_container.style.marginRight = "5%";
         setup_container.style.fontSize = "18px";
         setup_container.style.backgroundColor = "#141414;";
         container.appendChild(setup_container);
@@ -385,14 +387,15 @@ var SVG2Chalk = (function(){
         update_label.innerHTML = "Update function :";
         update_label.style.marginLeft = "3%";
         update_label.style.color = "white";
-        container.appendChild(update_label);
+        //container.appendChild(update_label);
 
         var update_container = document.createElement("div");
         update_container.innerHTML = update_source_code;
         update_container.id = "update_container";
+        update_container.style.display = "inline-block";
         update_container.style.position = "relative";
-        update_container.style.width = "95%";
-        update_container.style.height = "40%";
+        update_container.style.width = "45%";
+        update_container.style.height = "82%";
         update_container.style.left = "2.5%";
         update_container.style.fontSize = "18px";
         update_container.style.backgroundColor = "#141414;";
@@ -414,7 +417,7 @@ var SVG2Chalk = (function(){
         cancel.className = "cancel";
         cancel.innerHTML = "Cancel";
         cancel.style.float = "left";
-        cancel.style.marginTop = "15px";
+        cancel.style.marginTop = "10px";
         cancel.style.borderRadius = "5px";
         cancel.addEventListener("click", function(){
             document.querySelector("#codeEditorContainer").style.zIndex = "-2";
@@ -424,7 +427,7 @@ var SVG2Chalk = (function(){
         var save = document.createElement("button");
         save.className = "ok";
         save.innerHTML = "Apply changes";
-        save.style.marginTop = "15px";
+        save.style.marginTop = "10px";
         save.style.borderRadius = "5px";
         save.addEventListener("click", function(){
             document.querySelector("#codeEditorContainer").style.zIndex = "-2";
