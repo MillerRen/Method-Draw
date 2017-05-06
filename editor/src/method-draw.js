@@ -1340,10 +1340,9 @@
             $("#sensor_label").html(selectedElement.getAttribute("sensor") || "false");
 
             $('#label_input').val(selectedElement.getAttribute("label") || "untitled-shape");
-            $('#bodyA_input').val(selectedElement.getAttribute("bodyA") || "");
-            $('#bodyB_input').val(selectedElement.getAttribute("bodyB") || "");
-
-            var dash = selectedElement.getAttribute("stroke-dasharray") || "none"
+            $('#bodyA_input').val(selectedElement.getAttribute("bodya") || "");
+            $('#bodyB_input').val(selectedElement.getAttribute("bodyb") || "");
+            var dash = selectedElement.getAttribute("stroke-dasharray") || "none";
             $('option', '#stroke_style').removeAttr('selected');
             $('#stroke_style option[value="'+ dash +'"]').attr("selected", "selected");
             $('#stroke_style').trigger('change');
@@ -1732,14 +1731,14 @@
 
       $('#label_cancel_button').click(function(){
             $('#label_input').val(selectedElement.getAttribute("label") || "untitled-shape");
-            $('#bodyA_input').val(selectedElement.getAttribute("bodyA") || "");
-            $('#bodyB_input').val(selectedElement.getAttribute("bodyB") || "");
+            $('#bodyA_input').val(selectedElement.getAttribute("bodya") || "");
+            $('#bodyB_input').val(selectedElement.getAttribute("bodyb") || "");
       });
 
       $('#label_save_button').click(function(){
             selectedElement.setAttribute("label", $('#label_input').val() || "untitled-shape");
-            selectedElement.setAttribute("bodyA", $('#bodyA_input').val() || "");
-            selectedElement.setAttribute("bodyB", $('#bodyB_input').val() || "");
+            selectedElement.setAttribute("bodya", $('#bodyA_input').val() || "");
+            selectedElement.setAttribute("bodyb", $('#bodyB_input').val() || "");
       });
 
       $('#category').change(function(){
