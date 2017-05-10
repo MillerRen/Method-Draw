@@ -7880,7 +7880,9 @@ this.convertToPath = function(elem, getBBox) {
   if(elem == null) {
     var elems = selectedElements;
     $.each(selectedElements, function(i, elem) {
-      if(elem) canvas.convertToPath(elem);
+      // David: Prevent ellipses to be converted to paths since chalk does not support curves.
+      // This also prevents tacks to be broken
+      if(elem && elem.tagName != "ellipse") canvas.convertToPath(elem);
     });
     return;
   }
