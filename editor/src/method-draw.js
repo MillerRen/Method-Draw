@@ -518,7 +518,13 @@
         multiselected = (elems.length >= 2) ? elems : false;
         if (svgCanvas.elementsAreSame(multiselected)) selectedElement = multiselected[0]
         if (selectedElement != null) {
-          $('#multiselected_panel').hide()
+          $('#multiselected_panel').hide();
+          if(selectedElement.tagName == "rect")
+          {
+              // David:
+              // rid of rects since paths are easier to handle
+              svgCanvas.convertToPath(selectedElement);
+          }
           updateToolbar();
           if (multiselected.length) {//multiselected elements are the same
             $('#tools_top').addClass('multiselected')
