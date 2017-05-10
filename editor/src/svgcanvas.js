@@ -7905,7 +7905,7 @@ this.convertToPath = function(elem, getBBox) {
   // any attribute on the element not covered by the above
   // TODO: make this list global so that we can properly maintain it
   // TODO: what about @transform, @clip-rule, @fill-rule, etc?
-  $.each(['marker-start', 'marker-end', 'marker-mid', 'filter', 'clip-path'], function() {
+  $.each(['marker-start', 'marker-end', 'marker-mid', 'filter', 'clip-path', 'label', 'category', 'sensor','static'], function() {
     if (elem.getAttribute(this)) {
       attrs[this] = elem.getAttribute(this);
     }
