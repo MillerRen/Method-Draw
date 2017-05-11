@@ -15,6 +15,7 @@
 
   <!-- <script src="https://rawgit.com/ajaxorg/ace-builds/master/src-noconflict/ace.js" async></script> -->
   <script src="lib/ace/ace.js" async></script>
+  <script src="https://togetherjs.com/togetherjs-min.js"></script>
 
   <style>
   .hiddenForChalk
@@ -172,6 +173,8 @@
         <div class="separator"></div>
         <div onclick="SVG2Chalk.saveProject()" class="menu_item" id="export_chalk_level"> Save project</div>
         <div onclick="SVG2Chalk.openProject()" class="menu_item" id="export_chalk_level"> Open project</div>
+        <div class="separator"></div>
+        <div onclick="TogetherJS(this); return false;" class="menu_item" id="export_chalk_level"> Collaborate </div>
     </div>
   </div>
   
