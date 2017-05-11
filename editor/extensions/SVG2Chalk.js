@@ -34,6 +34,11 @@ var SVG2Chalk = (function(){
             isColaborative = true;
             //document.querySelector("#svgcontent").addEventListener("DOMSubtreeModified", onDrawingModified);
             syncLoopInterval = setInterval(syncLoop, 1000);
+            document.querySelector("#togetherjs-dock").style.backgroundColor = "#4D4E53";
+            document.querySelector("#togetherjs-share > header").style.backgroundColor = "#4D4E53";
+            document.querySelector("#togetherjs-confirm-end > header").style.backgroundColor = "#4D4E53";
+            document.querySelector("#togetherjs-chat > header").style.backgroundColor = "#4D4E53";
+            document.querySelector("#togetherjs-chat > section.togetherjs-subtitle").style.backgroundColor = "#4D4E53";
         });
 
         TogetherJS.on("close", function () {
