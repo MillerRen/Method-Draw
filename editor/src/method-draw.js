@@ -519,7 +519,7 @@
         if (svgCanvas.elementsAreSame(multiselected)) selectedElement = multiselected[0]
         if (selectedElement != null) {
           $('#multiselected_panel').hide();
-          if(selectedElement.tagName == "rect")
+          if(selectedElement && selectedElement.tagName == "rect")
           {
               // David:
               // rid of rects since paths are easier to handle

@@ -42,25 +42,31 @@ var SVG2Chalk = (function(){
 
     	var xmlDoc = getCurrentDrawingElem(); 
         var rects = xmlDoc.getElementsByTagName("rect");
+
+        for(var i = rects.length -1; i >= 0; i--)
+        {
+            svgCanvas.convertToPath(rects[i]);
+        }
+
         var ellipses = xmlDoc.getElementsByTagName("ellipse");
         var paths = xmlDoc.getElementsByTagName("path");
 
         svg_width = scaleIt(2000);
         svg_height = scaleIt(1236);
 
-        for(var i = 0; i < rects.length; i++)
-        {
-            var shape =  createShapeFromRect(rects[i]);
-            var category = shape.category;
-            delete shape.category;
-            switch(category)
-            {
-                case "bodies" : { bodies.push(shape); break; }
-                case "tacks" : { tacks.push(shape); break; }
-                case "hints" : { hints.push(shape); break; }
-                case "decorations" : { decorations.push(shape); break; }
-            }
-        }
+        //for(var i = 0; i < rects.length; i++)
+        //{
+        //    var shape =  createShapeFromRect(rects[i]);
+        //    var category = shape.category;
+        //    delete shape.category;
+        //    switch(category)
+        //    {
+        //        case "bodies" : { bodies.push(shape); break; }
+        //        case "tacks" : { tacks.push(shape); break; }
+        //        case "hints" : { hints.push(shape); break; }
+        //        case "decorations" : { decorations.push(shape); break; }
+        //    }
+        //}
 
         for(var i = 0; i < ellipses.length; i++)
         {
