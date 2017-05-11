@@ -6,6 +6,9 @@
 
 var SVG2Chalk = (function(){
 
+    var isColaborative = false;
+    var lockDrawingUpdate = false;
+
     var parser = new DOMParser();
     var scale = 0.01;
     var svg_width = 0;
@@ -22,6 +25,53 @@ var SVG2Chalk = (function(){
 
     var setup_source_code = "\r\nfunction setup(context) {\r\n    /* your code goes here */\r\n    context.gameover = false;\r\n}\r\n";
     var update_source_code = "\r\nfunction update(context) {\r\n    /* your code goes here */\r\n    return context.gameover;\r\n}\r\n";
+
+    function init()
+    {
+        TogetherJS.on("ready", function () {
+            isColaborative = true;
+            document.querySelector("#svgcontent").addEventListener("DOMSubtreeModified", onDrawingModified);
+        });
+
+        TogetherJS.on("close", function () {
+            isColaborative = false;
+            document.querySelector("#svgcontent").removeEventListener("DOMSubtreeModified", onDrawingModified);
+        });
+        
+        TogetherJS.hub.on("modifyDrawing", function (obj) {
+            lockDrawingUpdate = true;
+            getCurrentDrawingElem().innerHTML = obj.svg;
+            lockDrawingUpdate = false;
+        });
+
+        TogetherJS.hub.on("modifyProperties", function (obj) {
+            current_title = obj.current_title;
+            current_description = obj.current_description;
+        });
+
+        TogetherJS.hub.on("modifyCode", function (obj) {
+            setup_source_code = obj.setup_source_code;
+            update_source_code = obj.update_source_code;
+        });
+    }
+
+    init();
+
+    function onDrawingModified()
+    {
+        if(isColaborative && !lockDrawingUpdate)
+        {
+            TogetherJS.send({
+                type: "modifyDrawing", 
+                svg : getCurrentDrawingElem().innerHTML,
+            });
+        }
+    }
+
+    function sync()
+    {
+        onDrawingModified();
+    }
 
     function run(width, height)
     {
@@ -439,6 +489,16 @@ var SVG2Chalk = (function(){
             document.querySelector("#codeEditorContainer").style.zIndex = "-2";
             setup_source_code = setupEditor.getValue();
             update_source_code = updateEditor.getValue();
+
+            if(isColaborative)
+            {
+                TogetherJS.send({
+                    type: "modifyCode", 
+                    setup_source_code : setup_source_code,
+                    update_source_code : update_source_code,
+                });
+            }
+
         });
         buttons_container.appendChild(save);
 
@@ -546,6 +606,14 @@ var SVG2Chalk = (function(){
             document.querySelector("#propEditorContainer").style.zIndex = "-3";
             current_title = document.querySelector("#title_input").value;
             current_description = document.querySelector("#description_input").value;
+            if(isColaborative)
+            {
+                TogetherJS.send({
+                    type: "modifyProperties", 
+                    current_title : current_title,
+                    current_description : current_description,
+                });
+            }
         });
         container.appendChild(save);
 
@@ -673,6 +741,7 @@ var SVG2Chalk = (function(){
              getCurrentTitle : getCurrentTitle,
              exportPrefab : exportPrefab,
              importPrefab : importPrefab,
+             sync         : sync,
              importLevel : function(){
                 getCurrentDrawingElem().innerHTML = '<title style="pointer-events:inherit">Layer 1</title><rect fill="url(#diagonal-stripe-1)" stroke="#fff" stroke-width="5" style="pointer-events:inherit" x="122.49969188866038" y="1035.166623227708" width="1755.0006355362018" height="198.33340515556313" id="svg_1" stroke-dasharray="none" static="true" category="bodies" sensor="false" opacity="1.0"></rect><rect fill="url(#diagonal-stripe-1)" stroke="#fff" stroke-width="5" x="255.8330519701965" y="569.6666733646753" width="695.0002516795785" height="68.33335807880746" id="svg_2" stroke-dasharray="none" static="true" category="bodies" sensor="false" opacity="1.0" transform="rotate(33.71042251586914 603.3331909179689,603.8333740234375) "></rect><ellipse fill="none" stroke="#fff" stroke-width="5" stroke-opacity="null" fill-opacity="null" style="pointer-events:inherit" cx="457.499778113753" cy="207.99987695847946" id="svg_3" rx="41.66668175537046" ry="41.666681755370405" stroke-dasharray="none" static="false" category="bodies" sensor="false" opacity="1.0"></ellipse><path fill="none" stroke="#fff" stroke-width="5" stroke-opacity="null" fill-opacity="null" d="M 1350.8334349488946 449.66663113962784 C 1349.16676767868 449.66663113962784 1245.8333969253613 267.9998986862129 1245.0004044581922 266.66675329760477 C 1245.8333969253613 267.9998986862129 1435.8334657298503 192.99987152654612 1445.8334693511392 192.99987152654612 C 1455.8334729724281 192.99987152654612 1877.5002923367765 267.9998986862129 1876.6672763318936 266.66675329760477 C 1877.5002923367765 267.9998986862129 1907.5003032006432 588.0000145674576 1906.6672860778742 586.6668572547305 C 1907.5003032006432 588.0000145674576 1369.1667749212575 691.3333853207762 1374.166776731902 691.3333853207762 C 1379.1667785425466 691.3333853207762 1557.500176455532 603.0000199993909 1556.667172374768 601.6668621277207 C 1557.500176455532 603.0000199993909 1645.833541776917 416.3332857353315 1645.0005344045994 415.00013481939743 C 1645.833541776917 416.3332857353315 1530.8335001320947 327.99992041394626 1530.0004970450075 326.66677278956587 C 1530.8335001320947 327.99992041394626 1377.5001112723317 339.66659130544997 1376.6671138988847 338.33344324633606 C 1377.5001112723317 339.66659130544997 1352.5001022191093 449.66663113962784 1350.8334349488946 449.66663113962784 z" id="svg_4" stroke-dasharray="10,10" static="false" category="hints" sensor="false" opacity="0.34"></path>';
              } };
