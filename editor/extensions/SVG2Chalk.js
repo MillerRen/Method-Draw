@@ -63,25 +63,35 @@ var SVG2Chalk = (function(){
             setup_source_code = obj.setup_source_code;
             update_source_code = obj.update_source_code;
         });
+
+        /* When a new guest arrives */
+        TogetherJS.hub.on('togetherjs.hello', function () {
+
+                /* It sends the current drawing */
+                TogetherJS.send({
+                   type : "modifyDrawing", 
+                   svg  : getCurrentDrawingElem().innerHTML,
+               });
+
+                /* It sends the current properties */
+                TogetherJS.send({
+                    type: "modifyProperties", 
+                    current_title : current_title,
+                    current_description : current_description,
+                });                
+
+                /* It sends the current level code */
+                TogetherJS.send({
+                    type: "modifyCode", 
+                    setup_source_code : setup_source_code,
+                    update_source_code : update_source_code,
+                });                
+        });
+
+
     }
 
     init();
-
-    //function onDrawingModified()
-    //{
-    //    if(isColaborative && !lockDrawingUpdate)
-    //    {
-    //        TogetherJS.send({
-    //            type: "modifyDrawing", 
-    //            svg : getCurrentDrawingElem().innerHTML,
-    //        });
-    //    }
-    //}
-
-    //function sync()
-    //{
-    //    onDrawingModified();
-    //}
 
     function syncLoop()
     {
