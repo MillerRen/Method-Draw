@@ -187,7 +187,7 @@ var SVG2Chalk = (function(){
         //var serializer = new XMLSerializer();
         var str = xmlDoc.innerHTML;//serializer.serializeToString(xmlDoc.innerHTML);
 
-        var source = "\r\nLevelSelector.getLevels().push({\r\n" + 
+        var source = "\r\nLevelManager.getLevels().push({\r\n" + 
             "title : '" + current_title + "',\r\n" +
             "description : '" + current_description + "',\r\n" +
             "bodies : " + JSON.stringify(bodies) + ",\r\n" +
