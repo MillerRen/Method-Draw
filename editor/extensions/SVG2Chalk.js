@@ -17,7 +17,9 @@ var SVG2Chalk = (function(){
     var svg_width = 0;
     var svg_height = 0;
     var current_title = "Dummy title";
-    var current_description = "Dummy description";
+    var current_description = "Dummy description 1";
+    var current_star2_description = "Dummy description 2";
+    var current_star3_description = "Dummy description 3";
     var isEditorCreated = false;
     var isPropEditorCreated = false;
     var projectFileInput = null;
@@ -28,6 +30,7 @@ var SVG2Chalk = (function(){
 
     var setup_source_code = "\r\nfunction setup(context) {\r\n    /* your code goes here */\r\n    context.gameover = false;\r\n}\r\n";
     var update_source_code = "\r\nfunction update(context) {\r\n    /* your code goes here */\r\n    return context.gameover;\r\n}\r\n";
+    var show_timer = false;
 
     function init()
     {
@@ -57,6 +60,9 @@ var SVG2Chalk = (function(){
         TogetherJS.hub.on("modifyProperties", function (obj) {
             current_title = obj.current_title;
             current_description = obj.current_description;
+            current_star2_description = obj.current_star2_description;
+            current_star3_description = obj.current_star3_description;
+            show_timer = obj.show_timer;
         });
 
         TogetherJS.hub.on("modifyCode", function (obj) {
@@ -78,6 +84,9 @@ var SVG2Chalk = (function(){
                     type: "modifyProperties", 
                     current_title : current_title,
                     current_description : current_description,
+                    current_star2_description : current_star2_description,
+                    current_star3_description : current_star3_description,
+                    show_timer                : show_timer,
                 });                
 
                 /* It sends the current level code */
@@ -186,10 +195,10 @@ var SVG2Chalk = (function(){
 
         //var serializer = new XMLSerializer();
         var str = xmlDoc.innerHTML;//serializer.serializeToString(xmlDoc.innerHTML);
-
+        var descriptions = [current_description, current_star2_description, current_star3_description];
         var source = "\r\nLevelManager.getLevels().push({\r\n" + 
             "title : '" + current_title + "',\r\n" +
-            "description : '" + current_description + "',\r\n" +
+            "descriptions : " + JSON.stringify(descriptions) + ",\r\n" +
             "bodies : " + JSON.stringify(bodies) + ",\r\n" +
             "tacks : " + JSON.stringify(tacks) + ",\r\n" +
             "hints : " + JSON.stringify(hints) + ",\r\n" +
@@ -575,6 +584,9 @@ var SVG2Chalk = (function(){
         {
             document.querySelector("#title_input").value = current_title;
             document.querySelector("#description_input").value = current_description;
+            document.querySelector("#star2_description_input").value = current_star2_description;
+            document.querySelector("#star3_description_input").value = current_star3_description;
+            document.querySelector("#timer_input").checked = show_timer;
             document.querySelector("#propEditorContainer").style.zIndex = "2";
             return;
         }
@@ -583,10 +595,10 @@ var SVG2Chalk = (function(){
         container.style.border = "3px solid white";
         container.style.position = "absolute";
         container.style.width = "500px";
-        container.style.height = "230px";
+        container.style.height = "450px";
         container.style.left = "50%";
         container.style.top = "50%";
-        container.style.margin = "-150px 0 0 -250px";
+        container.style.margin = "-225px 0 0 -250px";
         container.style.backgroundColor = "#2F2F2C";
         container.style.borderRadius = "10px";  
 
@@ -607,7 +619,7 @@ var SVG2Chalk = (function(){
 
         var description = document.createElement("label");
         description.style.lineHeight= "40px";
-        description.innerHTML = "Level description :";
+        description.innerHTML = "1st Star description :";
         description.style.marginLeft = "2%";
         description.style.color = "white";
         container.appendChild(description);
@@ -620,6 +632,54 @@ var SVG2Chalk = (function(){
         description_input.style.lineHeight = "30px";
         container.appendChild(description_input);
         description_input.style.marginBottom = "3%";
+
+        var star2_description = document.createElement("label");
+        star2_description.style.lineHeight= "40px";
+        star2_description.innerHTML = "2nd Star description :";
+        star2_description.style.marginLeft = "2%";
+        star2_description.style.color = "white";
+        container.appendChild(star2_description);
+
+        var star2_description_input = document.createElement("input");
+        star2_description_input.id = "star2_description_input";
+        star2_description_input.style.marginLeft = "3%";
+        star2_description_input.value = current_star2_description;
+        star2_description_input.style.width = "94%";
+        star2_description_input.style.lineHeight = "30px";
+        container.appendChild(star2_description_input);
+        star2_description_input.style.marginBottom = "3%";
+
+        var star3_description = document.createElement("label");
+        star3_description.style.lineHeight= "40px";
+        star3_description.innerHTML = "3th Star description :";
+        star3_description.style.marginLeft = "2%";
+        star3_description.style.color = "white";
+        container.appendChild(star3_description);
+
+        var star3_description_input = document.createElement("input");
+        star3_description_input.id = "star3_description_input";
+        star3_description_input.style.marginLeft = "3%";
+        star3_description_input.value = current_star3_description;
+        star3_description_input.style.width = "94%";
+        star3_description_input.style.lineHeight = "30px";
+        container.appendChild(star3_description_input);
+        star3_description_input.style.marginBottom = "3%";
+
+        var timer_input = document.createElement("input");
+        timer_input.type ="checkbox";
+        timer_input.id = "timer_input";
+        timer_input.style.marginLeft = "3%";
+        timer_input.checked = show_timer;
+        container.appendChild(timer_input);
+
+        var timer = document.createElement("label");
+        timer.style.lineHeight= "40px";
+        timer.innerHTML = "Timer visible";
+        timer.style.marginLeft = "2%";
+        timer.style.color = "white";
+        timer.style.display = "inline-block";
+        container.appendChild(timer);
+        container.appendChild(document.createElement("br"));
 
         var cancel = document.createElement("button");
         cancel.style.marginLeft = "20px";
@@ -643,12 +703,18 @@ var SVG2Chalk = (function(){
             document.querySelector("#propEditorContainer").style.zIndex = "-3";
             current_title = document.querySelector("#title_input").value;
             current_description = document.querySelector("#description_input").value;
+            current_star2_description = document.querySelector("#star2_description_input").value;
+            current_star3_description = document.querySelector("#star3_description_input").value;
+            show_timer = document.querySelector("#timer_input").checked;
             if(isColaborative)
             {
                 TogetherJS.send({
                     type: "modifyProperties", 
                     current_title : current_title,
                     current_description : current_description,
+                    current_star2_description : current_star2_description,
+                    current_star3_description : current_star3_description,
+                    show_timer                : show_timer,
                 });
             }
         });
@@ -665,6 +731,9 @@ var SVG2Chalk = (function(){
             current_description : current_description,
             setup_source_code : setup_source_code,
             update_source_code : update_source_code,
+            current_star2_description : current_star2_description,
+            current_star3_description : current_star3_description,
+            show_timer : show_timer,
             svg : getCurrentDrawingElem().innerHTML,
         };
 
@@ -704,6 +773,9 @@ var SVG2Chalk = (function(){
         var proj = JSON.parse(content);
         current_title = proj.current_title;
         current_description = proj.current_description;
+        current_star2_description = proj.current_star2_description;
+        current_star3_description = proj.current_star3_description;
+        show_timer = proj.show_timer;
         setup_source_code = proj.setup_source_code;
         update_source_code = proj.update_source_code;
         getCurrentDrawingElem().innerHTML = proj.svg;
