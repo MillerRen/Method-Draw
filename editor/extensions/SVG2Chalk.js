@@ -28,8 +28,8 @@ var SVG2Chalk = (function(){
     var setupEditor = null;
     var updateEditor = null;
 
-    var setup_source_code = "\r\nfunction setup(context) {\r\n    /* your code goes here */\r\n    context.earnedStars = 0;\r\n}\r\n";
-    var update_source_code = "\r\nfunction update(context) {\r\n    /* your code goes here */\r\n    return context.earnedStars;\r\n}\r\n";
+    var setup_source_code = "\r\nfunction setup(context) {\r\n    /* your code goes here */\r\n    context.statuscode = 0;\r\n}\r\n";
+    var update_source_code = "\r\nfunction update(context) {\r\n    /* your code goes here */\r\n    return context.statuscode;\r\n}\r\n";
     var show_timer = false;
 
     function init()
