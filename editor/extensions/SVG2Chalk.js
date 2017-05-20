@@ -123,6 +123,7 @@ var SVG2Chalk = (function(){
     {
         var source = build();
         var source = btoa(source);
+        //var url = "file:///C:/Users/david.landeros/Documents/HTML5%20Projects/airconsole-project1/src/screen.html#" + source;
         var url = "https://rawgithub.com/DavidLanderosAlcala/airconsole-project1/engine-migration/src/screen.html#" + source
         window.open(url, "", "width=" + width + ",height=" + height);
     }
@@ -199,6 +200,7 @@ var SVG2Chalk = (function(){
         var source = "\r\nLevelManager.getLevels().push({\r\n" + 
             "title : '" + current_title + "',\r\n" +
             "descriptions : " + JSON.stringify(descriptions) + ",\r\n" +
+            "show_timer : " + (show_timer ? "true" : "false") + ",\r\n" +
             "bodies : " + JSON.stringify(bodies) + ",\r\n" +
             "tacks : " + JSON.stringify(tacks) + ",\r\n" +
             "hints : " + JSON.stringify(hints) + ",\r\n" +
