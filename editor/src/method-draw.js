@@ -1344,6 +1344,8 @@
             $("#category_label").html(selectedElement.getAttribute("category") || "bodies");
             $('#sensor').val(selectedElement.getAttribute("sensor") || "false");
             $("#sensor_label").html(selectedElement.getAttribute("sensor") || "false");
+            $('#respawn').val(selectedElement.getAttribute("respawn") || "false");
+            $("#respawn_label").html(selectedElement.getAttribute("respawn") || "false");            
 
             $('#label_input').val(selectedElement.getAttribute("label") || "untitled-shape");
             $('#bodyA_input').val(selectedElement.getAttribute("bodya") || "");
@@ -1355,6 +1357,7 @@
             $('#static').trigger('change');
             $('#category').trigger('change');
             $('#sensor').trigger('change');
+            $('#respawn').trigger('change');
 
             //$.fn.dragInput.updateCursor($('#stroke_width')[0])
             $.fn.dragInput.updateCursor($('#blur')[0])
@@ -1783,6 +1786,12 @@
         $("#sensor_label").html(this.options[this.selectedIndex].text);
         operaRepaint();
       });
+
+      $('#respawn').change(function(){
+        svgCanvas.setStrokeAttr('respawn', $(this).val() || "false");
+        $("#respawn_label").html(this.options[this.selectedIndex].text);
+        operaRepaint();
+      });      
       
       $('#seg_type').change(function() {
         svgCanvas.setSegType($(this).val());

@@ -28,8 +28,8 @@ var SVG2Chalk = (function(){
     var setupEditor = null;
     var updateEditor = null;
 
-    var setup_source_code = "\r\nfunction setup(context) {\r\n    /* your code goes here */\r\n    context.statuscode = 0;\r\n}\r\n";
-    var update_source_code = "\r\nfunction update(context) {\r\n    /* your code goes here */\r\n    return context.statuscode;\r\n}\r\n";
+    var setup_source_code = "\r\nfunction setup(ctx) {\r\n    /* your code goes here */\r\n    ctx.statuscode = 0;\r\n}\r\n";
+    var update_source_code = "\r\nfunction update(ctx) {\r\n    /* your code goes here */\r\n    return ctx.statuscode;\r\n}\r\n";
     var show_timer = false;
 
     function init()
@@ -207,7 +207,7 @@ var SVG2Chalk = (function(){
             "decorations : " + JSON.stringify(decorations) + ",\r\n" +
             "setup : " + setupFunc + ",\r\n" +
             "update : " + updateFunc + ",\r\n" +
-        "});\r\n\r\n\r\n/*\r\n Generated from SVG: \r\n" + str + "\r\n*/";
+        "});\r\n\r\n";
     	return source;
     }
 
@@ -244,6 +244,7 @@ var SVG2Chalk = (function(){
             category : element.getAttribute("category"),
             isStatic : element.getAttribute("static") == "true",
             isSensor : element.getAttribute("sensor") == "true",
+            respawn : element.getAttribute("respawn") == "true",
             vertices : [
                 [-half_width, -half_height],
                 [-half_width, half_height],
@@ -356,6 +357,7 @@ var SVG2Chalk = (function(){
             category : element.getAttribute("category") || "bodies",
             isStatic : element.getAttribute("static") == "true",
             isSensor : element.getAttribute("sensor") == "true",
+            respawn : element.getAttribute("respawn") == "true",
             vertices : parseVertices(element.getAttribute("d")),
         };
 
@@ -403,6 +405,7 @@ var SVG2Chalk = (function(){
             category : element.getAttribute("category"),
             isStatic : element.getAttribute("static") == "true",
             isSensor : element.getAttribute("sensor") == "true",
+            respawn : element.getAttribute("respawn") == "true",
             radio : radius,
         };
 
