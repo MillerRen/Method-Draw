@@ -264,7 +264,7 @@ var SVG2Chalk = (function(){
         var opacity = element.getAttribute("opacity");
         if(obj.category == "hints" || obj.category == "decorations")
         {
-            if(element.getAttribute("d").indexOf("Z") > 0)
+            if(element.getAttribute("d").indexOf("Z") > 0 || element.getAttribute("d").indexOf("z") > 0)
                 obj.vertices.push(obj.vertices[0]);
             obj.line = element.getAttribute("hintline");
             obj.opacity = opacity;
@@ -381,7 +381,7 @@ var SVG2Chalk = (function(){
         var opacity = element.getAttribute("opacity");
         if(obj.category == "hints" || obj.category == "decorations")
         {
-            if(element.getAttribute("d").indexOf("Z") > 0)
+            if(element.getAttribute("d").indexOf("Z") > 0 || element.getAttribute("d").indexOf("z") > 0)
             {
                 obj.vertices.push(obj.vertices[0]);
             }
