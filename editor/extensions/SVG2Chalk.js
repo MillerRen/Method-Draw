@@ -266,6 +266,7 @@ var SVG2Chalk = (function(){
         {
             if(element.getAttribute("d").indexOf("Z") > 0)
                 obj.vertices.push(obj.vertices[0]);
+            obj.line = element.getAttribute("hintline");
             obj.opacity = opacity;
             delete obj.isStatic;
             delete obj.isSensor;
@@ -384,7 +385,7 @@ var SVG2Chalk = (function(){
             {
                 obj.vertices.push(obj.vertices[0]);
             }
-            console.log(element.getAttribute("d"));
+            obj.line = element.getAttribute("hintline");
             obj.opacity = opacity;
             delete obj.isStatic;
             delete obj.isSensor;

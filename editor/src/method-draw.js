@@ -1345,7 +1345,9 @@
             $('#sensor').val(selectedElement.getAttribute("sensor") || "false");
             $("#sensor_label").html(selectedElement.getAttribute("sensor") || "false");
             $('#respawn').val(selectedElement.getAttribute("respawn") || "false");
-            $("#respawn_label").html(selectedElement.getAttribute("respawn") || "false");            
+            $("#respawn_label").html(selectedElement.getAttribute("respawn") || "false");
+            $('#hintline').val(selectedElement.getAttribute("hintline") || "solid");
+            $("#hintline_label").html(selectedElement.getAttribute("hintline") || "solid");
 
             $('#label_input').val(selectedElement.getAttribute("label") || "untitled-shape");
             $('#bodyA_input').val(selectedElement.getAttribute("bodya") || "");
@@ -1358,6 +1360,7 @@
             $('#category').trigger('change');
             $('#sensor').trigger('change');
             $('#respawn').trigger('change');
+            $('#hintline').trigger('change');
 
             //$.fn.dragInput.updateCursor($('#stroke_width')[0])
             $.fn.dragInput.updateCursor($('#blur')[0])
@@ -1754,10 +1757,10 @@
         svgCanvas.setStrokeAttr('category', $(this).val() || "bodies");
         if($(this).val() == "hints" || ($(this).val() == "decorations"))
         {
-            if($(this).val() == "hints")
-                svgCanvas.setStrokeAttr('stroke-dasharray', "10,10");
-            else
-              svgCanvas.setStrokeAttr('stroke-dasharray', "3,3");
+            //if($(this).val() == "decoration")
+            //    svgCanvas.setStrokeAttr('stroke-dasharray', "10,10");
+            //else
+            //  svgCanvas.setStrokeAttr('stroke-dasharray', "3,3");
             svgCanvas.setStrokeAttr('fill', "none");
             svgCanvas.setStrokeAttr('static', "false");
             $("#static_label").html("false");
@@ -1791,7 +1794,22 @@
         svgCanvas.setStrokeAttr('respawn', $(this).val() || "false");
         $("#respawn_label").html(this.options[this.selectedIndex].text);
         operaRepaint();
-      });      
+      });
+
+      $('#hintline').change(function(){
+        var value = $(this).val() || "solid";
+        svgCanvas.setStrokeAttr('hintline', value);
+        $("#hintline_label").html(this.options[this.selectedIndex].text);
+        if(value == "dotted")
+        {
+          svgCanvas.setStrokeAttr('stroke-dasharray', "10,10");
+        }
+        else
+        {
+          svgCanvas.setStrokeAttr('stroke-dasharray', "none");
+        }
+        operaRepaint();
+      }); 
       
       $('#seg_type').change(function() {
         svgCanvas.setSegType($(this).val());
