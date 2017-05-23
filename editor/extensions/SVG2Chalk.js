@@ -264,7 +264,8 @@ var SVG2Chalk = (function(){
         var opacity = element.getAttribute("opacity");
         if(obj.category == "hints" || obj.category == "decorations")
         {
-            obj.vertices.push(obj.vertices[0]);
+            if(element.getAttribute("d").indexOf("Z") > 0)
+                obj.vertices.push(obj.vertices[0]);
             obj.opacity = opacity;
             delete obj.isStatic;
             delete obj.isSensor;
@@ -379,7 +380,11 @@ var SVG2Chalk = (function(){
         var opacity = element.getAttribute("opacity");
         if(obj.category == "hints" || obj.category == "decorations")
         {
-            obj.vertices.push(obj.vertices[0]);
+            if(element.getAttribute("d").indexOf("Z") > 0)
+            {
+                obj.vertices.push(obj.vertices[0]);
+            }
+            console.log(element.getAttribute("d"));
             obj.opacity = opacity;
             delete obj.isStatic;
             delete obj.isSensor;
