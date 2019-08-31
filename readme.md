@@ -30,6 +30,92 @@ function update(ctx) {
 }
 ```
 
+In this example, the player wins 3 stars when he/she draws __any__ shape. (Phy is an object that emits events)
+
+```javascript
+function setup(ctx) {
+    // we create a bitflag with an initial value of Zero
+    ctx.stars = 0;
+
+    // since we want to be notified when the player draws something, we subscribe to the event "addBody"
+    Phy.on("addBody", ()=> {
+      // then we give the player 3 stars inmediatly
+      ctx.stars = FIRST_STAR | SECOND_STAR | THIRD_STAR;
+    });
+}
+
+function update(ctx) {
+    // there is nothing to do here but returning the current value of the bitflag
+    return ctx.stars;
+}
+```
+
+There are 2 event emitters that you can use in the level script
+- Game
+- Physics (a.k.a Phy)
+
+| Game Events        |  Desc.                                                   |
+|--------------------|:--------------------------------------------------------:|
+| addTack            |  when the player adds a tack                             |
+| connectTack        |  when the player connects a tack with other shape        |
+| removeTack         |  when the player removes a tack                          |
+| deleteDrawing      |  when the player removes a drawing                       |
+
+| Phy events          |  Desc.                                                   |
+|---------------------|:--------------------------------------------------------:|
+| addBody             |  when the player draws a solid body                      |
+| removeBody          |  when the player removes a solid body                    |
+| beginContact        |  when a collision occurs                                 |
+| endContact          |  when a collision finishes                               |
+| beginContactBetween |  when a collision occurs between 2 specific objects      |
+| endContactBetween   |  when a collision finishes between 2 specific objects    |
+
+#### Advanced example
+This level gives the player 3 stars if he/she manage to crash the object
+__ball1__ with the object __ball2__, but it only gives the player a single star if
+he/she deletes something
+
+```javascript
+function setup(ctx) {
+
+   ctx.deletedSomething = false;
+   ctx.bitflag = 0;
+
+   Phy.on("removeBody", () => {
+       ctx.deletedSomething = true;
+   });
+
+   Phy.on("beginContactBetween", "ball1", "ball2", () => {
+       if(ctx.deletedSomething) {
+           ctx.bitflag = FIRST_STAR;
+       }
+       else {
+           ctx.bitflag = FIRST_STAR | SECOND_STAR | THIRD_STAR;
+       }
+   });
+}
+
+function update(ctx) {
+   return ctx.bitflag;
+}
+```
+##### Those objects also provide some useful functions
+
+| Function                       |  Desc.                                                          |
+|--------------------------------|:---------------------------------------------------------------:|
+| Game.getTime()                 | Get the time in seconds since the level started                 |
+| Game.getDrawnObjectsCount()    | Get the number of object the player has drawn                   |
+| Game.getHints()                | Get an array of "hints" so you can manipulate their visibility  |
+| Phy.getPosition(handler)       | Get the position of an object (screen space)                    |
+| Phy.getAngle(handler)          | Get the angle of an object in radians                           |
+| Phy.getAllBodies()             | Get all the objects of the world in an array                    |
+| Phy.setPosition(handler, pos ) | Teleports an object to the given position (srceen space)        |
+| Phy.setVelocity(handler, vel)  | Set object velocity                                             |
+| Phy.setAngle(handler, angle)   | Set object angle in radians                                     |
+| Phy.clearForces(handler)       | Remove any force moving an object                               |
+| Phy.getBodyByLabel(label)      | Obtiene el handler de un objeto                                 |
+| Phy.getBodyByLabel(label)      | Get an object by its label                                      |
+
 ## Credits
 - __Method-Draw__ (SVG editor we forked) https://github.com/methodofaction/Method-Draw
 - __Ace__ (A Javascript library for adding a fancy code editor to your web app) https://ace.c9.io/
