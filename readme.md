@@ -119,7 +119,7 @@ function update(ctx) {
 ## Credits
 - __Method-Draw__ (SVG editor we forked) https://github.com/methodofaction/Method-Draw
 - __Ace__ (A Javascript library for adding a fancy code editor to your web app) https://ace.c9.io/
-
+- __TogetherJS__ (provide us with realtime collaborative features) https://togetherjs.com/
 ## License
 MIT
 
