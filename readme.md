@@ -99,7 +99,7 @@ function update(ctx) {
    return ctx.bitflag;
 }
 ```
-##### Those objects also provide some useful functions
+#### Those objects also provide some useful functions
 
 | Function                       |  Desc.                                                          |
 |--------------------------------|:---------------------------------------------------------------:|
