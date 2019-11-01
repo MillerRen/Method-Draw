@@ -117,9 +117,10 @@ function update(ctx) {
 | Phy.getBodyByLabel(label)      | Get an object by its label                                      |
 
 ## Credits
-- __Method-Draw__ (SVG editor we forked) https://github.com/methodofaction/Method-Draw
-- __Ace__ (A Javascript library for adding a fancy code editor to your web app) https://ace.c9.io/
-- __TogetherJS__ (provide us with realtime collaborative features) https://togetherjs.com/
+- [Method-Draw](https://github.com/methodofaction/Method-Draw) - The SVG editor we forked
+- [Ace](https://ace.c9.io/) - A Javascript library for adding a fancy code editor to your web app
+- [TogetherJS](https://togetherjs.com/) - provided us with realtime collaborative features
+
 ## License
 MIT
 
