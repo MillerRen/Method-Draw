@@ -2,7 +2,7 @@
 > The official level editor for our magical-chalk game
 
 ## Story
-we wanted to bring crayon physics to the web so we made [this](https://github.com/DavidLanderosAlcala/magical-chalk) game, this repo is a fork of an SVG editor that we turned out into our level editor (the result is [here](https://rawgit.com/DavidLanderosAlcala/airconsole-project1/engine-migration/level-editor/index.html))
+we wanted to bring crayon physics to the web so we made [this](https://github.com/DavidLanderosAlcala/magical-chalk) game, this repo is a fork of an SVG editor that we turned into our level editor (the result is [here](https://rawgit.com/DavidLanderosAlcala/airconsole-project1/engine-migration/level-editor/index.html))
 
 <p align="center"><img width="600" src="https://user-images.githubusercontent.com/5791055/64069851-d280bb00-cc07-11e9-8d93-82393136ff16.gif"></p>
 
