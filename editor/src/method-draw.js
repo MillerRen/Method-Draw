@@ -28,9 +28,9 @@
     var is_ready = false;
     curConfig = {
       canvas_expansion: 1, 
-      dimensions: [580,400], 
-      initFill: {color: 'fff', opacity: 1},
-      initStroke: {width: 1.5, color: '000', opacity: 1},
+      dimensions: [2000, 1236], 
+      initFill: {color: 'none', opacity: 1},
+      initStroke: {width: 5.0, color: 'fff', opacity: 1},
       initOpacity: 1,
       imgPath: 'images/',
       extPath: 'extensions/',
@@ -518,7 +518,13 @@
         multiselected = (elems.length >= 2) ? elems : false;
         if (svgCanvas.elementsAreSame(multiselected)) selectedElement = multiselected[0]
         if (selectedElement != null) {
-          $('#multiselected_panel').hide()
+          $('#multiselected_panel').hide();
+          if(selectedElement && selectedElement.tagName == "rect")
+          {
+              // David:
+              // rid of rects since paths are easier to handle
+              svgCanvas.convertToPath(selectedElement);
+          }
           updateToolbar();
           if (multiselected.length) {//multiselected elements are the same
             $('#tools_top').addClass('multiselected')
@@ -1250,20 +1256,39 @@
       
       var createBackground = function(fill) {
         svgCanvas.createLayer("background")
+        //cur_shape = svgCanvas.addSvgElementFromJson({
+        //  "element": "rect",
+        //  "attr": {
+        //    "x": -1,
+        //    "y": -1,
+        //    "width": res.w+2,
+        //    "height": res.h+2,
+        //    "stroke": "none",
+        //    "id": "canvas_background",
+        //    "opacity": 1,
+        //    "fill": fill || "#000",
+        //    "style": "pointer-events:none"
+        //  }
+        //});
+
         cur_shape = svgCanvas.addSvgElementFromJson({
-          "element": "rect",
+          "element": "image",
           "attr": {
-            "x": -1,
-            "y": -1,
+            "x": 0,
+            "y": 0,
             "width": res.w+2,
             "height": res.h+2,
+            //"width": "100%",
+            //"height": "100%",
             "stroke": "none",
             "id": "canvas_background",
             "opacity": 1,
-            "fill": fill || "#fff",
+            "fill": fill || "#000",
+            "xlink:href": "./images/chalkboard.png",
             "style": "pointer-events:none"
           }
         });
+
         svgCanvas.setCurrentLayer("Layer 1")
         svgCanvas.setCurrentLayerPosition("1")
       }
@@ -1312,12 +1337,32 @@
             //Editor.paintBox.stroke.update(false);
             
             $('#stroke_width').val(selectedElement.getAttribute("stroke-width") || 0);
-            var dash = selectedElement.getAttribute("stroke-dasharray") || "none"
+
+            $('#static').val(selectedElement.getAttribute("static") || "false");
+            $("#static_label").html(selectedElement.getAttribute("static") || "false");
+            $('#category').val(selectedElement.getAttribute("category") || "bodies");
+            $("#category_label").html(selectedElement.getAttribute("category") || "bodies");
+            $('#sensor').val(selectedElement.getAttribute("sensor") || "false");
+            $("#sensor_label").html(selectedElement.getAttribute("sensor") || "false");
+            $('#respawn').val(selectedElement.getAttribute("respawn") || "false");
+            $("#respawn_label").html(selectedElement.getAttribute("respawn") || "false");
+            $('#hintline').val(selectedElement.getAttribute("hintline") || "solid");
+            $("#hintline_label").html(selectedElement.getAttribute("hintline") || "solid");
+
+            $('#label_input').val(selectedElement.getAttribute("label") || "untitled-shape");
+            $('#bodyA_input').val(selectedElement.getAttribute("bodya") || "");
+            $('#bodyB_input').val(selectedElement.getAttribute("bodyb") || "");
+            var dash = selectedElement.getAttribute("stroke-dasharray") || "none";
             $('option', '#stroke_style').removeAttr('selected');
             $('#stroke_style option[value="'+ dash +'"]').attr("selected", "selected");
             $('#stroke_style').trigger('change');
+            $('#static').trigger('change');
+            $('#category').trigger('change');
+            $('#sensor').trigger('change');
+            $('#respawn').trigger('change');
+            $('#hintline').trigger('change');
 
-            $.fn.dragInput.updateCursor($('#stroke_width')[0])
+            //$.fn.dragInput.updateCursor($('#stroke_width')[0])
             $.fn.dragInput.updateCursor($('#blur')[0])
           }
   
@@ -1681,6 +1726,90 @@
         $("#stroke_style_label").html(this.options[this.selectedIndex].text)
         operaRepaint();
       });
+
+      $('#static').change(function(){
+        svgCanvas.setStrokeAttr('static', $(this).val() || "false");
+        if($(this).val() == "true")
+        {
+            svgCanvas.setStrokeAttr('fill', "url(#diagonal-stripe-1)");
+        }
+        else
+        {
+            svgCanvas.setStrokeAttr('fill', "none");
+        }
+        $("#static_label").html(this.options[this.selectedIndex].text);
+        operaRepaint();
+      });
+
+      $('#label_cancel_button').click(function(){
+            $('#label_input').val(selectedElement.getAttribute("label") || "untitled-shape");
+            $('#bodyA_input').val(selectedElement.getAttribute("bodya") || "");
+            $('#bodyB_input').val(selectedElement.getAttribute("bodyb") || "");
+      });
+
+      $('#label_save_button').click(function(){
+            selectedElement.setAttribute("label", $('#label_input').val() || "untitled-shape");
+            selectedElement.setAttribute("bodya", $('#bodyA_input').val() || "");
+            selectedElement.setAttribute("bodyb", $('#bodyB_input').val() || "");
+      });
+
+      $('#category').change(function(){
+        svgCanvas.setStrokeAttr('category', $(this).val() || "bodies");
+        if($(this).val() == "hints" || ($(this).val() == "decorations"))
+        {
+            //if($(this).val() == "decoration")
+            //    svgCanvas.setStrokeAttr('stroke-dasharray', "10,10");
+            //else
+            //  svgCanvas.setStrokeAttr('stroke-dasharray', "3,3");
+            svgCanvas.setStrokeAttr('fill', "none");
+            svgCanvas.setStrokeAttr('static', "false");
+            $("#static_label").html("false");
+        }
+        else
+        {
+            svgCanvas.setStrokeAttr('stroke-dasharray', "none");
+        }
+
+
+        $("#category_label").html(this.options[this.selectedIndex].text);
+        operaRepaint();
+      });
+
+      $('#sensor').change(function(){
+        svgCanvas.setStrokeAttr('sensor', $(this).val() || "false");
+        if($(this).val() == "true")
+        {
+            svgCanvas.setStrokeAttr('opacity', "0.2");
+        }
+        else
+        {
+            svgCanvas.setStrokeAttr('opacity', "1.0");
+        }
+
+        $("#sensor_label").html(this.options[this.selectedIndex].text);
+        operaRepaint();
+      });
+
+      $('#respawn').change(function(){
+        svgCanvas.setStrokeAttr('respawn', $(this).val() || "false");
+        $("#respawn_label").html(this.options[this.selectedIndex].text);
+        operaRepaint();
+      });
+
+      $('#hintline').change(function(){
+        var value = $(this).val() || "solid";
+        svgCanvas.setStrokeAttr('hintline', value);
+        $("#hintline_label").html(this.options[this.selectedIndex].text);
+        if(value == "dotted")
+        {
+          svgCanvas.setStrokeAttr('stroke-dasharray', "10,10");
+        }
+        else
+        {
+          svgCanvas.setStrokeAttr('stroke-dasharray', "none");
+        }
+        operaRepaint();
+      }); 
       
       $('#seg_type').change(function() {
         svgCanvas.setSegType($(this).val());
@@ -2519,6 +2648,14 @@
         }
         svgCanvas.save(saveOpts);
       };
+
+      var clickExportChalkLevel = function(){
+          var saveOpts = {
+            'images': curPrefs.img_save,
+            'round_digits': 6
+          }
+          svgCanvas.exportChalkLevel(saveOpts);
+      }
       
       var saveSourceEditor = function(){
         if (!editingsource) return;
@@ -3203,6 +3340,7 @@
           {sel:'#tool_zoom', fn: clickZoom, evt: 'mouseup', key: ['Z', true]},
           {sel:'#tool_clear', fn: clickClear, evt: 'mouseup', key: [modKey + 'N', true]},
           {sel:'#tool_save', fn: function() { editingsource ? saveSourceEditor(): clickSave() }, evt: 'mouseup', key: [modKey + 'S', true]},
+          {sel:'#export_chalk_level', fn: function() {  clickExportChalkLevel() }, evt: 'mouseup', key: [modKey + 'E', true]},
           {sel:'#tool_export', fn: clickExport, evt: 'mouseup'},
           {sel:'#tool_open', fn: clickOpen, evt: 'mouseup'},
           {sel:'#tool_import', fn: clickImport, evt: 'mouseup'},

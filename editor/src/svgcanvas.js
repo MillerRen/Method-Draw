@@ -5562,6 +5562,7 @@ this.open = function() {
 // Nothing
 this.save = function(opts) {
   // remove the selected outline before serializing
+
   clearSelection();
   // Update save options if provided
   if(opts) $.extend(save_options, opts);
@@ -5569,10 +5570,30 @@ this.save = function(opts) {
   
   // no need for doctype, see http://jwatt.org/svg/authoring/#doctype-declaration
   var str = this.svgCanvasToString();
+
   if (svgedit.browser.supportsBlobs()) {
-    var blob = new Blob([ str ], {type: "image/svg+xml;charset=utf-8"});
+    var blob = new Blob([ str ], {type: "application/javascript"});
     var dropAutoBOM = true;
-    saveAs(blob, "method-draw-image.svg", dropAutoBOM);
+    saveAs(blob, "svg1.svg", dropAutoBOM);
+  }
+  else {
+    call("saved", str);
+  }
+};
+
+// Function: exportChalkLevel
+this.exportChalkLevel = function(opts) {
+  
+  clearSelection();
+  if(opts) $.extend(save_options, opts);
+  save_options.apply = true;
+  
+  var str = js_beautify(SVG2Chalk.build());//this.svgCanvasToString();
+
+  if (svgedit.browser.supportsBlobs()) {
+    var blob = new Blob([ str ], {type: "application/javascript"});
+    var dropAutoBOM = true;
+    saveAs(blob, SVG2Chalk.getCurrentTitle().replace(" ","-") + ".js", dropAutoBOM);
   }
   else {
     call("saved", str);
@@ -7859,7 +7880,9 @@ this.convertToPath = function(elem, getBBox) {
   if(elem == null) {
     var elems = selectedElements;
     $.each(selectedElements, function(i, elem) {
-      if(elem) canvas.convertToPath(elem);
+      // David: Prevent ellipses to be converted to paths since chalk does not support curves.
+      // This also prevents tacks to be broken
+      if(elem && elem.tagName != "ellipse") canvas.convertToPath(elem);
     });
     return;
   }
@@ -7884,7 +7907,7 @@ this.convertToPath = function(elem, getBBox) {
   // any attribute on the element not covered by the above
   // TODO: make this list global so that we can properly maintain it
   // TODO: what about @transform, @clip-rule, @fill-rule, etc?
-  $.each(['marker-start', 'marker-end', 'marker-mid', 'filter', 'clip-path'], function() {
+  $.each(['marker-start', 'marker-end', 'marker-mid', 'filter', 'clip-path', 'label', 'category', 'sensor','static'], function() {
     if (elem.getAttribute(this)) {
       attrs[this] = elem.getAttribute(this);
     }

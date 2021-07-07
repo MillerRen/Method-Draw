@@ -60,8 +60,7 @@ svgedit.path.init = function(editorContext) {
   editorContext_ = editorContext;
   
   pathFuncs = [0,'ClosePath'];
-  var pathFuncsStrs = ['Moveto', 'Lineto', 'CurvetoCubic', 'CurvetoQuadratic', 'Arc',
-    'LinetoHorizontal', 'LinetoVertical','CurvetoCubicSmooth','CurvetoQuadraticSmooth'];
+  var pathFuncsStrs = ['Moveto', 'Lineto', 'CurvetoCubic', 'CurvetoQuadratic', 'Arc', 'LinetoHorizontal', 'LinetoVertical','CurvetoCubicSmooth','CurvetoQuadraticSmooth'];
   $.each(pathFuncsStrs, function(i,s) {
     pathFuncs.push(s+'Abs');
     pathFuncs.push(s+'Rel');

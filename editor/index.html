@@ -12,6 +12,23 @@
   <link rel="stylesheet" href="lib/jgraduate/css/jgraduate.css" type="text/css"/>
   <link rel="stylesheet" href="css/method-draw.css" type="text/css"/>
   <link rel="stylesheet" href="css/fonts.css" type="text/css"/>
+
+  <!-- <script src="https://rawgit.com/ajaxorg/ace-builds/master/src-noconflict/ace.js" async></script> -->
+  <script src="lib/ace/ace.js" async></script>
+  <script>
+      TogetherJSConfig_dontShowClicks = true;
+      TogetherJSConfig_youtube = false;
+  </script>
+  <script src="https://togetherjs.com/togetherjs-min.js"></script>
+
+  <style>
+  .hiddenForChalk
+  {
+    z-index: -1;
+    position: absolute;
+    left : -1000px;
+  }
+  </style>
 <!--{endif}-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <meta name="apple-mobile-web-app-capable" content="yes"/>
@@ -48,7 +65,7 @@
   <script type="text/javascript" src="lib/jgraduate/jpicker.min.js"></script>
   <script type="text/javascript" src="lib/mousewheel.js"></script>
   <script type="text/javascript" src="extensions/ext-eyedropper.js"></script>
-  <script type="text/javascript" src="extensions/ext-shapes.js"></script>
+  <!-- <script type="text/javascript" src="extensions/ext-shapes.js"></script>-->
   <script type="text/javascript" src="extensions/ext-grid.js"></script>
   <script type="text/javascript" src="lib/requestanimationframe.js"></script>
   <script type="text/javascript" src="lib/taphold.js"></script>
@@ -144,6 +161,26 @@
         <div class="menu_item" id="tool_source">Source... <span class="shortcut">⌘U</span></div>
     </div>
   </div>
+
+  <div class="menu">
+    <div class="menu_title">Chalk</div>
+    <div class="menu_list" id="view_menu">
+        <div onclick="SVG2Chalk.run(1000,618);" class="menu_item" id="tool_rulers">Run (1000 x 618)</div>
+        <div onclick="SVG2Chalk.run(1400,865);" class="menu_item" id="tool_rulers">Run (1400 x 865)</div>
+        <div class="separator"></div>
+        <div onclick="SVG2Chalk.showProperties()" class="menu_item" id="tool_rulers">Level properties</div>
+        <div onclick="SVG2Chalk.showCodeEditor()" class="menu_item" id="tool_rulers">Level code</div>
+        <div class="separator"></div>
+        <div class="menu_item" id="export_chalk_level">Export level</div>
+        <div onclick="SVG2Chalk.exportPrefab()" class="menu_item" id="export_chalk_level">Export prefab</div>
+        <div onclick="SVG2Chalk.importPrefab()" class="menu_item" id="export_chalk_level">Import prefab</div>
+        <div class="separator"></div>
+        <div onclick="SVG2Chalk.saveProject()" class="menu_item" id="export_chalk_level"> Save project</div>
+        <div onclick="SVG2Chalk.openProject()" class="menu_item" id="export_chalk_level"> Open project</div>
+        <div class="separator"></div>
+        <div onclick="TogetherJS(this); SVG2Chalk.setAllowCommits(true); return false;" class="menu_item" id="export_chalk_level"> Collaborate </div>
+    </div>
+  </div>
   
 
   
@@ -160,12 +197,12 @@
       <span class="icon_label">Width</span>
     </label>
     <label data-title="Change canvas height">
-      <input id="canvas_height" size="3" type="text" pattern="[0-9]*" />
+      <input id="canvas_height" size="3" type="text" pattern="[0-9]*"/>
       <span class="icon_label">Height</span>
     </label>
         
-    
-    <label data-title="Change canvas color" class="draginput">
+    <!-- HIDDEN FOR CHALK LEVEL EDITOR -->
+    <label data-title="Change canvas color" class="draginput hiddenForChalk">
       <span>Color</span>
       <div id="color_canvas_tools">
         <div class="color_tool active" id="tool_canvas">
@@ -177,7 +214,8 @@
       </div>
     </label>
 
-    <div class="draginput">
+    <!-- HIDDEN FOR CHALK LEVEL EDITOR -->
+    <div class="draginput hiddenForChalk">
       <span>Sizes</span>
       <select id="resolution">
         <option id="selectedPredefined" selected="selected">Custom</option>
@@ -191,6 +229,7 @@
       <div class="caret"></div>
       <label id="resolution_label">Custom</label>
     </div>
+  
 
   </div>
   
@@ -418,14 +457,14 @@
         <span id="group_opacityLabel" class="icon_label">Opacity</span>
       </label>
     
-    <div class="toolset" id="tool_blur" data-title="Change gaussian blur value">
+    <div class="toolset hiddenForChalk" id="tool_blur" data-title="Change gaussian blur value">
       <label>
         <input id="blur" size="2" value="0" step=".1"  min="0" max="10" />
         <span class="icon_label">Blur</span>
       </label>
     </div>
     
-    <label id="cornerRadiusLabel" data-title="Change Rectangle Corner Radius">
+    <label class="hiddenForChalk" id="cornerRadiusLabel" data-title="Change Rectangle Corner Radius">
       <input id="rect_rx" size="3" value="0" data-attr="rx" class="attr_changer" type="text" pattern="[0-9]*" />
       <span class="icon_label">Roundness</span>
     </label>
@@ -475,14 +514,37 @@
   
   <div id="stroke_panel" class="context_panel clearfix">
     <div class="clearfix"></div>
-    <h4>Stroke</h4>
-    <div class="toolset" data-title="Change stroke">
-      <label>
-        <input id="stroke_width" size="2" value="5" data-attr="stroke-width" min="0" max="99" step="1" />
-        <span class="icon_label">Stroke Width</span>
-      </label>
+    <h4>Chalk</h4>
+    <div class="stroke_tool draginput"> 
+      <span>Static</span>
+      <select id="static" data-title="Change static property">
+        <option selected="selected" value="false">false</option>
+        <option value="true">true</option>
+      </select>
+      <div class="caret"></div>
+      <label style="font-size: 12px" id="static_label">false</label>
     </div>
     <div class="stroke_tool draginput"> 
+      <span>Category</span>
+      <select id="category" data-title="Change category property">
+        <option selected="selected" value="bodies">bodies</option>
+        <option value="hints">hints</option>
+        <option value="decorations">decorations</option>
+        <option value="tacks">tacks</option>
+      </select>
+      <div class="caret"></div>
+      <label style="font-size: 12px" id="category_label">bodies</label>
+    </div>
+    <div class="stroke_tool draginput"> 
+      <span>Sensor</span>
+      <select id="sensor" data-title="Change sensor property">
+        <option selected="selected" value="false">false</option>
+        <option value="true">true</option>
+      </select>
+      <div class="caret"></div>
+      <label style="font-size: 12px" id="sensor_label">false</label>
+    </div>
+    <div class="stroke_tool draginput hiddenForChalk"> 
       <span>Stroke Dash</span>
       <select id="stroke_style" data-title="Change stroke dash style">
         <option selected="selected" value="none">—</option>
@@ -494,6 +556,54 @@
       <div class="caret"></div>
       <label id="stroke_style_label">—</label>
     </div>
+
+    <div class="stroke_tool draginput"> 
+      <span>Respawn</span>
+      <select id="respawn" data-title="Change respawn property">
+        <option selected="selected" value="false">false</option>
+        <option value="true">true</option>
+      </select>
+      <div class="caret"></div>
+      <label style="font-size: 12px" id="respawn_label">false</label>
+    </div>
+
+    <div class="stroke_tool draginput"> 
+      <span>Hint line</span>
+      <select id="hintline" data-title="Change hint line property">
+        <option selected="selected" value="solid">solid</option>
+        <option value="dotted">dotted</option>
+      </select>
+      <div class="caret"></div>
+      <label style="font-size: 12px" id="hintline_label">solid</label>
+    </div>
+
+    <div class="stroke_tool draginput"> 
+    </div>
+
+    <div class="stroke_tool"> 
+        <label style="margin-top:10px;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label>
+    </div>
+
+    <div class="stroke_tool"> 
+        <label style="margin-top:10px;">Label: </label>
+        <input style="width:140px;" id="label_input" type="text"/><br>
+    </div>
+
+    <div class="stroke_tool"> 
+        <label style="margin-top:10px;">BodyA: </label>
+        <input style="width:140px;" id="bodyA_input" type="text"/><br>
+    </div>
+
+    <div class="stroke_tool"> 
+        <label style="margin-top:10px;">BodyB: </label>
+        <input style="width:140px;" id="bodyB_input" type="text"/><br>
+    </div>
+
+    <div class="stroke_tool"> 
+         <br>
+        <button id="label_cancel_button" class="cancel"> cancel </button>
+        <button id="label_save_button"> save </button>
+    </div>
     
     <label style="display: none;">
       <span class="icon_label">Stroke Join</span>
@@ -504,6 +614,7 @@
     </label>
   </div>
 
+
 </div> <!-- tools_top -->
   <div id="cur_context_panel">
     
@@ -512,15 +623,15 @@
 
 <div id="tools_left" class="tools_panel">
   <div class="tool_button" id="tool_select" title="Select Tool [V]"></div>
-  <div class="tool_button" id="tool_fhpath" title="Pencil Tool [P]"></div>
-  <div class="tool_button" id="tool_line" title="Line Tool [L]"></div>
+  <div class="tool_button hiddenForChalk2" id="tool_fhpath" title="Pencil Tool [P]"></div>
+  <!--<div class="tool_button" id="tool_line" title="Line Tool [L]"></div>-->
   <div class="tool_button" id="tool_rect" title="Square/Rect Tool [R]"></div>
   <div class="tool_button" id="tool_ellipse" title="Ellipse/Circle Tool [C]"></div>
   <div class="tool_button" id="tool_path" title="Path Tool [P]"></div>
-  <div class="tool_button" id="tool_text" title="Text Tool [T]"></div>
+  <!-- <div class="tool_button" id="tool_text" title="Text Tool [T]"></div> -->
   <div class="tool_button" id="tool_zoom" title="Zoom Tool [Z]"></div>
   
-  <div id="color_tools">
+  <div id="color_tools" class="hiddenForChalk">
         <div id="tool_switch" title="Switch stroke and fill colors [X]"></div>
         <div class="color_tool active" id="tool_fill">
           <label class="icon_label" title="Change fill color"></label>
@@ -567,7 +678,7 @@
     </div>
   </div>
 
-  <div id="tools_bottom_3">
+  <div id="tools_bottom_3" class="hiddenForChalk">
     <div id="palette" title="Click to change fill color, shift-click to change stroke color"></div>
   </div>
 </div>
@@ -627,6 +738,9 @@
   <li><a href="#move_down">Send Backward<span class="shortcut">⌘↓</span></a></li>
   <li><a href="#move_back">Send to Back<span class="shortcut">⌘⇧↓</span></a></li>
 </ul>
+
+  <script src="https://cdn.rawgit.com/beautify-web/js-beautify/v1.6.12/js/lib/beautify.js"></script>
+  <script type="text/javascript" src="extensions/SVG2Chalk.js"></script>
 
 </body>
 </html>
